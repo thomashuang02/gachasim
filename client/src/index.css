@@ -1,0 +1,224 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat|Ubuntu');
+:root {
+    --light-blue: #94dfff;
+    --purple: #7600ff;
+}
+body {
+    text-rendering: optimizeLegibility;
+	font-smooth: always;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Montserrat', sans-serif;
+}
+input, button {
+    appearance: none;
+    background: none;
+    border: none;
+    outline: none;
+}
+button {
+    cursor: pointer;
+}
+.App {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #313336;
+}
+form, .window {
+    display: block;
+    position: relative;
+}
+
+form:after, .window:after {
+    content: '';
+    display: block;
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    right: -5px;
+    bottom: -5px;
+    z-index: 100;
+    background-image: linear-gradient(to bottom right, var(--light-blue), var(--purple));
+    border-radius: 10px;
+}
+.inner-form, .inner-window {
+    border-radius: 7px;
+    position: relative;
+    display: block;
+    background-color: #FFF;
+    padding: 30px;
+    z-index: 200;
+}
+.inner-form h4 {
+    font-size: 35px;
+    font-weight: 700;
+}
+.inner-form h3, .inner-window h3 {
+    font-size: 25px;
+    font-weight: 500;
+}
+.inner-form h2 {
+    font-size: 20px;
+    font-weight: 500;
+}
+.inner-form .form-item {
+    width: 100%;
+    margin-bottom: 15px;
+}
+.inner-form .form-item label {
+    display: flex;
+    font-size: 16px;
+    margin-bottom: 5px;
+    transition: 0.4s;
+    justify-content: space-between;
+    align-items: center;
+}
+.inner-form .form-item:focus-within label {
+    color: #7600ff;
+}
+.inner-form .form-item input {
+    font-size: 14px;
+    display: block;
+    padding: 10px 12px;
+    background-color: #f5f5f5;
+    border-radius: 8px;
+    transition: 0.4s;
+    width: 100%;
+}
+.inner-form .form-item input:focus {
+    box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.219);
+}
+button[type='submit'], button[type='button'] {
+    font-size: 16px;
+    line-height: 17px;
+    display: inline-block;
+    padding: 11px 15px;
+    border-radius: 7px;
+    background-image: linear-gradient(to right, #a5a5a5 50%, var(--light-blue) 50%, var(--purple));
+    background-size: 210%;
+    background-position: 195%;
+    transition: 0.4s;
+    color: #FFF;
+    font-weight: 700;
+}
+button[type='submit']:hover, button[type='button']:hover {
+    background-position: 100% 0%;
+    font-size: 17px;
+}
+a {
+    text-decoration: none;
+    color: black;
+    transition: 0.4s;
+    position: relative;
+}
+a:hover {
+    color: white;
+}
+a::before {
+    z-index: -1;
+    position: absolute;
+    content: '';
+    left: -25%;
+    top: -30%;
+    width: 150%;
+    height: 160%;
+    background-image: url('./images/brush-stroke-blue-purple-gradient.png');
+    background-repeat: no-repeat;
+    background-position: 100% 50%;
+    background-size: 100% 100%;
+    filter: opacity(40%);
+    transition: 0.4s;
+}
+a:hover:before {
+    filter: opacity(100%);
+}
+.bottom-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+}
+.bottom-option {
+    font-size: 14px;
+}
+.text-centered {
+    text-align: center;
+}
+.error {
+    font-size: 14px;
+    color: red;
+}
+.logo {
+    position: absolute;
+    width: 90px;
+    z-index: 300;
+    top: -35px;
+    right: -35px;
+    transition: opacity 0.5s;
+	opacity: 1;
+    -webkit-user-select: none;  /* Chrome all / Safari all */
+    -moz-user-select: none;     /* Firefox all */
+    -ms-user-select: none;      /* IE 10+ */
+    user-select: none;  
+}
+.stroke-button {
+    text-decoration: none;
+    color: black;
+    transition: 0.4s;
+    position: relative;
+}
+.stroke-button:hover {
+    color: white;
+}
+.stroke-button::before {
+    z-index: -1;
+    position: absolute;
+    content: '';
+    left: -25%;
+    top: -30%;
+    width: 150%;
+    height: 160%;
+    background-image: url('./images/brush-stroke-blue-purple-gradient.png');
+    background-repeat: no-repeat;
+    background-position: 100% 50%;
+    background-size: 100% 100%;
+    filter: opacity(40%);
+    transition: 0.4s;
+}
+.stroke-button:hover:before {
+    filter: opacity(100%);
+}
+.App {
+    transition: opacity 0.5s;
+	opacity: 1;
+}
+.loading {
+    opacity: 0 !important;
+}
+/* custom scrollbar */
+::-webkit-scrollbar {
+    width: 17px;
+}
+::-webkit-scrollbar-track {
+    background-color: transparent;
+    margin: 3px;
+}
+::-webkit-scrollbar-thumb {
+    background-image: linear-gradient(to bottom, #c8efff, #ba7eff);
+    border-radius: 150px;
+    border: 5px solid transparent;
+    background-clip: content-box;
+}
+::-webkit-scrollbar-thumb:hover {
+    background-image: linear-gradient(to bottom, #bcebff, #a352ff);
+}
+::-webkit-scrollbar-thumb:active {
+    background-image: linear-gradient(to bottom, var(--light-blue), var(--purple));
+}

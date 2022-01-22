@@ -1,0 +1,32 @@
+#gacha-select-form {
+    width: 450px;
+}
+.menu-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 15px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid rgb(185, 185, 185);
+}
+#gacha-select-form #logout-button {
+    margin-left: 35px;
+}
+#gacha-select-form #my-profile-button, #gacha-select-form #logout-button {
+    font-size: 16px;
+}
+.gacha-option {
+    width: 100%;
+}
+.gacha-options-container {
+    box-sizing: content-box;
+    text-align: center;
+    width: calc(100% + 17px);
+    height: 400px;
+    /* overflow: hidden; */
+    position: relative;
+    overflow-y: scroll;
+}
+#gacha-select-form .form-item {
+    margin: 6px 0;
+}

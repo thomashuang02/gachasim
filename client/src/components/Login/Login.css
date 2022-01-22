@@ -1,0 +1,17 @@
+.note {
+    font-size: 12px;
+    font-weight: 300;
+}
+.title {
+    margin-bottom: 20px;
+}
+#login-form .inner-form {
+    height: 388px;
+    width: 420px;
+}
+#login-form .inner-form h2 {
+    margin-bottom: 25px;
+}
+#login-form .inner-form h4 {
+    margin-bottom: 0.5px;
+}

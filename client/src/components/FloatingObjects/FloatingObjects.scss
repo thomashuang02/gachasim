@@ -1,0 +1,36 @@
+body {
+	overflow: hidden;
+}
+.floating-wrap{
+	perspective-origin: 50% 50%;
+}
+.floating{
+	position: absolute;
+	bottom: 150vh;
+	transform-style: preserve-3d;
+	transition: opacity 0.5s;
+	opacity: 1;
+	-webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Old versions of Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none;
+}
+$total: 47;
+@for $i from 1 through $total {
+	$scale:random(2) - .4;
+	.floating:nth-child(#{$i}){
+		left: calc(random(100) * 1% - 200px);
+		animation: raise#{$i} 6 + random(15) +s linear infinite;
+		animation-delay:random(5) - 5 + s;
+		z-index: $total - $i;
+		transform: scale(0.5 - (0.3 * $i / $total)) rotate(random(360) + deg);
+	  @keyframes raise#{$i} {
+		  to{
+			 bottom: -50vh;
+			 transform: scale(0.5 - 0.3 * ($i / $total)) rotate(random(360) + deg);
+			}
+		}
+	}
+}

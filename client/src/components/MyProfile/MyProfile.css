@@ -1,0 +1,52 @@
+#user-profile {
+    width: 700px;
+}
+#username {
+    position: relative;
+}
+#username-text-container {
+    width: 350px;
+}
+#username-text {
+    max-width: 350px;
+    overflow: hidden;
+    position: relative;
+    display: inline-block;
+}
+#username-text-container:after {
+    content: '';
+    position: absolute;
+    display: block;
+    right: 0;
+    top: 0;
+    width: 30px;
+    height: 100%;
+    background: linear-gradient(to left, white 0%, transparent 100%);
+}
+#user-link {
+    position: absolute;
+    right: -30px;;
+    top: 0;
+    z-index: 500;
+    height: 95%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#username-wrapper {
+    position: relative;
+    display: inline-block;
+}
+#user-link-icon {
+    width: 20px;
+    height: 20px;
+    filter: brightness(0%);
+    transition: filter 0.4s;
+}
+#user-link-icon:hover {
+    cursor: pointer;
+    filter: none;
+}
+#user-profile #logout-button {
+    margin-left: 40px;
+}
