@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 module.exports = () => {
-    mongoose.connect(`mongodb+srv://${process.env.DBUser}:${process.env.DBPassword}@gachasim.aiahc.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`, {
+    mongoose.connect(`mongodb+srv://${process.env.DBUser}:${process.env.DBPassword}@gachasim.aiahc.mongodb.net/gachasim?retryWrites=true&w=majority`, {
         useNewUrlParser: true,
         useUnifiedTopology: true
     }).then(() => {

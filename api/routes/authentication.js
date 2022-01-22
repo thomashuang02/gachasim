@@ -58,7 +58,8 @@ router.post('/register', (req, res, next) => {
                 const hashedPassword = await bcrypt.hash(req.body.password, 10);
                 const newUser = new User({
                     username: req.body.username,
-                    password: hashedPassword
+                    password: hashedPassword,
+                    dateJoined: Date.now()
                 });
                 await newUser.save();
                 authenticate(req, res, next);
@@ -74,7 +75,7 @@ router.post('/register', (req, res, next) => {
         );
     }
 });
-router.get('/user', 
+router.get('/current-user', 
     passport.authenticate('jwt', { session: false }),
     (req, res) => {
         if(!req.user) {

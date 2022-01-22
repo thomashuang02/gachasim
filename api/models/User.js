@@ -10,6 +10,7 @@ const UserSchema = new mongoose.Schema({
         type: String,   //salt+hashed password using bcryptjs
         required: true
     },
+    dateJoined: Date
 });
 
 module.exports = mongoose.model('User', UserSchema);

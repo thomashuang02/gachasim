@@ -29,6 +29,9 @@ require('./passportConfig')(passport);
 const authenticationRoutes = require('./routes/authentication');
 app.use('/api/auth', authenticationRoutes);
 
+const userProfileRoutes = require('./routes/userProfile');
+app.use('/api/user-profile', userProfileRoutes);
+
 const GenshinImpactRoutes = require('./routes/GenshinImpact');
 app.use('/api/genshin-impact', GenshinImpactRoutes);
 
