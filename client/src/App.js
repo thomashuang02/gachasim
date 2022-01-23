@@ -18,12 +18,12 @@ const App = () => {
           <Route path='/register' element={<Register />} />
           <Route path='/gacha' element={
             <RequireAuthentication setUsername={setUsername}>
-              <GachaSelect username={username} />
+              <GachaSelect />
             </RequireAuthentication>
           }/>
           <Route path='/gacha/genshin-impact' element={
             <RequireAuthentication setUsername={setUsername}>
-              <GenshinImpact username={username} setUsername={setUsername}/>
+              <GenshinImpact />
             </RequireAuthentication>
           }/>
           <Route path='/user/:username' element={<UserProfile />} />

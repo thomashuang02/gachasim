@@ -222,3 +222,16 @@ a:hover:before {
 ::-webkit-scrollbar-thumb:active {
     background-image: linear-gradient(to bottom, var(--light-blue), var(--purple));
 }
+.gacha-page {
+    height: 100%;
+    width: 100%;
+    background-color: white;
+    background-color: #FFF;
+    z-index: 200;
+    display: flex;
+    flex-flow: column;
+}
+.gacha-area {
+    flex: 1 1 auto;
+    position: relative;
+}

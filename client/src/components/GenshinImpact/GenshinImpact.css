@@ -1,0 +1,104 @@
+#genshin-wish-page .gacha-area {
+    background: url('./assets/genshin-impact-wish-sky.png') no-repeat 20% 0%; 
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    cursor: url('./assets/genshin-cursor.png'), auto;
+}
+@font-face {
+    font-family: 'genshin-impact-font';
+    src: url('./assets/fonts/zh-cn.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+#genshin-wish-page .gacha-area * {
+    font-family: 'genshin-impact-font' !important;
+}
+.wish-buttons {
+    position: absolute;
+    bottom: 30px;
+    right: 4vw;
+    z-index: 1;
+}
+.wish-button {
+    width: min(40vw, 300px);
+    margin: 0 1vw;
+    transition: 0.1s;
+}
+.wish-button:hover {
+    cursor: url('./assets/genshin-cursor.png'), pointer;
+}
+.wish-button:active {
+    filter: brightness(90%);
+}
+.wish-title-container {
+    position: absolute;
+    top: 30px;
+    left: 4vw;
+    color: white;
+    filter: drop-shadow(0 0 5px gray);
+    font-size: 30px;
+    display: flex;
+    align-items: center;
+    z-index: 1;
+}
+.wish-title {
+    margin-left: 3vw;
+}
+.wish-icon {
+    filter: contrast(20%) brightness(130%) sepia(100%);
+}
+#banner-image-container {
+    width: min(1500px, 80%);
+    position: absolute;
+    margin-left: auto;
+    margin-right: auto;
+    left: 0;
+    right: 0;
+    bottom: 50%;
+    transform: translateY(50%);
+    opacity: 1;
+    transition: opacity 0.69s, left 0.69s;
+}
+#banner-image {
+    width: 100%;
+    border-radius: 10px;
+}
+.banner-sweeping {
+    opacity: 0 !important;
+    left: 50px !important;
+    /* transition: opacity 0s, left 0s !important; */
+}
+#change-banner-left, #change-banner-right {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    max-height: 6vw;
+    filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.1));
+    transition: 0.2s;
+    filter: none;
+}
+#change-banner-left:hover, #change-banner-right:hover {
+    cursor: url('./assets/genshin-cursor.png'), pointer;
+}
+#change-banner-left:active, #change-banner-right:active {
+    filter: opacity(40%);
+}
+#change-banner-left {
+    left: min(60px, 3vw);
+}
+#change-banner-right {
+    right: min(60px, 3vw);
+}
+.standard-banner #banner-image {
+    position: relative;
+    bottom: min(1.5vw, 40px);
+}
+#wish-animation {
+    height: 100vh;
+    width: 100%;
+    overflow: hidden;
+    object-fit: cover;
+    position: absolute;
+}

@@ -11,7 +11,7 @@ const GachaOption = props => {
   )
 }
 
-const Gacha = (props) => {
+const GachaSelect = (props) => {
   const navigate = useNavigate();
 
   const logout = () => {
@@ -118,4 +118,4 @@ const Gacha = (props) => {
   );
 }
 
-export default Gacha;
+export default GachaSelect;
