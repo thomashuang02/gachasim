@@ -5,37 +5,26 @@
     position: relative;
 }
 #username-text-container {
-    width: 350px;
+    width: 40vw;
+    max-width: 380px;
 }
 #username-text {
-    max-width: 350px;
-    overflow: hidden;
+    max-width: 100%;
     position: relative;
     display: inline-block;
-}
-#username-text-container:after {
-    content: '';
-    position: absolute;
-    display: block;
-    right: 0;
-    top: 0;
-    width: 30px;
-    height: 100%;
-    background: linear-gradient(to left, white 0%, transparent 100%);
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden
 }
 #user-link {
     position: absolute;
-    right: -30px;;
-    top: 0;
+    right: -25px;
+    top: 2px;
     z-index: 500;
     height: 95%;
     display: flex;
     justify-content: center;
     align-items: center;
-}
-#username-wrapper {
-    position: relative;
-    display: inline-block;
 }
 #user-link-icon {
     width: 20px;
@@ -49,4 +38,17 @@
 }
 #user-profile #logout-button {
     margin-left: 40px;
+}
+#user-profile .menu-options {
+    margin-left: 40px;
+}
+@media screen and (max-width: 780px) {
+    #user-profile {
+        width: 90vw;
+    }
+}
+@media screen and (max-width: 450px) {
+    #user-profile .menu-options {
+        font-size: 13px;
+    }
 }

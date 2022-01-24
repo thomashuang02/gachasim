@@ -145,7 +145,7 @@ const Register = (props) => {
         <div className='bottom-container'>
           <button type="submit">register</button>
           <div className='bottom-option'>
-            have an account? <a href='/login'>log in!</a>
+            have an account? <a href='/login'>log&nbsp;in!</a>
           </div>
         </div>
       </div>

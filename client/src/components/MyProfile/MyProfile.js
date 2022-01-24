@@ -55,16 +55,14 @@ const MyProfile = (props) => {
                 <div className='menu-bar'>
                     <div id='username'>
                         <div id='username-text-container'>
-                            <div id='username-wrapper'>
-                                <h3 id='username-text' className='menu-name'>
-                                    {username}
-                                </h3>
-                                <div id='user-link'>
-                                    <img data-tip='copy URL' onClick={() => copyURL()} 
-                                        id='user-link-icon' src='/images/link-icon-colored.png' 
-                                        alt='copy user profile link' />
-                                </div>
-                            </div>
+                              <h3 id='username-text' className='menu-name'>
+                                  qwe[poiqpweoiqpwoeiqpewiqpowei]
+                              </h3>
+                        </div>
+                        <div id='user-link'>
+                            <img data-tip='copy URL' onClick={() => copyURL()} 
+                                id='user-link-icon' src='/images/link-icon-colored.png' 
+                                alt='copy user profile link' />
                         </div>
                     </div>
                     <div className='menu-options'>

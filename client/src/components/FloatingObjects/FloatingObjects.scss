@@ -1,6 +1,3 @@
-body {
-	overflow: hidden;
-}
 .floating-wrap{
 	perspective-origin: 50% 50%;
 }
@@ -17,7 +14,7 @@ body {
         -ms-user-select: none; /* Internet Explorer/Edge */
             user-select: none;
 }
-$total: 47;
+$total: 20;
 @for $i from 1 through $total {
 	$scale:random(2) - .4;
 	.floating:nth-child(#{$i}){

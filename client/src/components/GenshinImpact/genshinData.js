@@ -1,24 +1,35 @@
 const wishButtonBank = {
-    x1: {
-      intertwined: {
-        sufficient: './assets/buttons/wish_intertwined_x1.png',
-        insufficient: './assets/buttons/wish_intertwined_x1_red.png'
-      },
-      acquaint: {
-        sufficient: './assets/buttons/wish_acquaint_x1.png',
-        insufficient: './assets/buttons/wish_acquaint_x1_red.png'
-      }
+  x1: {
+    intertwined: {
+      sufficient: './assets/buttons/wish_intertwined_x1.png',
+      insufficient: './assets/buttons/wish_intertwined_x1_red.png'
     },
-    x10: {
-      intertwined: {
-        sufficient: './assets/buttons/wish_intertwined_x10.png',
-        insufficient: './assets/buttons/wish_intertwined_x10_red.png'
-      },
-      acquaint: {
-        sufficient: './assets/buttons/wish_acquaint_x10.png',
-        insufficient: './assets/buttons/wish_acquaint_x10_red.png'
-      }
+    acquaint: {
+      sufficient: './assets/buttons/wish_acquaint_x1.png',
+      insufficient: './assets/buttons/wish_acquaint_x1_red.png'
     }
+  },
+  x10: {
+    intertwined: {
+      sufficient: './assets/buttons/wish_intertwined_x10.png',
+      insufficient: './assets/buttons/wish_intertwined_x10_red.png'
+    },
+    acquaint: {
+      sufficient: './assets/buttons/wish_acquaint_x10.png',
+      insufficient: './assets/buttons/wish_acquaint_x10_red.png'
+    }
+  }
+}
+const wishAnimationBank = {
+  single: {
+    threeStar: './assets/wish-animations/single_3-star_wish.mp4',
+    fourStar: './assets/wish-animations/single_4-star_wish.mp4',
+    fiveStar: './assets/wish-animations/single_5-star_wish.mp4',
+  },
+  multi: {
+    fourStar: './assets/wish-animations/multi_4-star_wish.mp4',
+    fiveStar: './assets/wish-animations/multi_5-star_wish.mp4'
+  }
 }
 const bannerBank = {
   focus: {
@@ -54,4 +65,4 @@ const bannerBank = {
   },
 }
 
-module.exports = {wishButtonBank, bannerBank};
+module.exports = {wishButtonBank, wishAnimationBank, bannerBank};

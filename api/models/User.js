@@ -1,16 +1,27 @@
 const mongoose = require('mongoose');
 
-// User Schema
+const GenshinImpactSchema = new mongoose.Schema({
+    numAcquaintFates: Number,
+    numIntertwinedFates: Number,
+    collection: {
+        characters: [Object],
+        weapons: [Object]
+    },
+    moneySpent: Number,
+});
+
 const UserSchema = new mongoose.Schema({
     username: {
-        type: String,   //e.g. movieaddict420
+        type: String,
         required: true
     },
     password: {
-        type: String,   //salt+hashed password using bcryptjs
+        type: String,
         required: true
     },
-    dateJoined: Date
+    dateJoined: Date,
+    GenshinImpact: GenshinImpactSchema,
+    totalMoneySpent: Number
 });
 
 module.exports = mongoose.model('User', UserSchema);

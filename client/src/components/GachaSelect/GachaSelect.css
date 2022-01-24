@@ -30,3 +30,10 @@
 #gacha-select-form .form-item {
     margin: 6px 0;
 }
+.menu-name {
+    white-space: nowrap;
+}
+.menu-options {
+    text-align: right;
+    line-height: 30px;
+}

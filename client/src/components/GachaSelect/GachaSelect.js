@@ -2,6 +2,7 @@ import './GachaSelect.css';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import FloatingObjects from '../FloatingObjects/FloatingObjects';
+import LogoHeader from '../LogoHeader/LogoHeader';
 
 const GachaOption = props => {
   return (
@@ -97,6 +98,7 @@ const GachaSelect = (props) => {
   return (
     <>
     <FloatingObjects />
+    <LogoHeader />
     <form id='gacha-select-form' onSubmit={(e)=>e.preventDefault()}>
       <div className='inner-form'>
         <div className='menu-bar'>

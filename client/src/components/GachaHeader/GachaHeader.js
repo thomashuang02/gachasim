@@ -1,7 +1,7 @@
 import './GachaHeader.css';
 import { useNavigate } from 'react-router-dom';
 
-const GachaFormat = (props) => {
+const GachaHeader = (props) => {
   const navigate = useNavigate();
 
   const logout = () => {
@@ -21,4 +21,4 @@ const GachaFormat = (props) => {
   );
 }
 
-export default GachaFormat;
+export default GachaHeader;

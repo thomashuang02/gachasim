@@ -2,6 +2,8 @@ import './FloatingObjects.scss';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
+const NUM_IMAGES = 20;
+
 const FloatingObjects = (props) => {
   const [images, setImages] = useState(null);
 
@@ -11,9 +13,10 @@ const FloatingObjects = (props) => {
 
   const generateFloatingObjects = (urls) => {
     let floatingObjects = [];
-    for(let i = 0; i < urls.length; i++) {
+    const randomIndex = Math.floor(Math.random() * urls.length);
+    for(let i = 0; i < NUM_IMAGES; i++) {
       floatingObjects.push(
-        <img onLoad={e => fadeIn(e)} className='floating loading' key={i} src={urls[i]} alt={urls[i].split('_')[-2]} />
+        <img onLoad={e => fadeIn(e)} className='floating loading' key={i} src={urls[randomIndex]} alt={urls[i].split('_')[-2]} />
       );
     }
     setImages(floatingObjects);
