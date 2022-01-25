@@ -1,3 +1,6 @@
+#genshin-wish-page img {
+    user-select: none;
+}
 #genshin-wish-page .gacha-area {
     background: url('./assets/genshin-impact-wish-sky.png') no-repeat 20% 0%; 
     -webkit-background-size: cover;
@@ -41,7 +44,7 @@
     top: 50%;
     transform: translateY(-50%);
     max-height: 6vw;
-    filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.3));
+    filter: drop-shadow(0 0 1px rgba(0, 0, 0, 0.1));
     transition: 0.2s;
 }
 #change-banner-left:hover, #change-banner-right:hover {
@@ -116,6 +119,10 @@
     height: 50px;
     cursor: url('./assets/genshin-cursor.png'), pointer;
     margin-left: 30px;
+    transition: 0.1s;
+}
+#close-wish-button:active {
+    filter: brightness(120%) drop-shadow(0 0 10px rgba(255, 255, 255, 0.5));
 }
 #fate-count-container, #primogem-count-container {
     height: 45px;
@@ -150,6 +157,13 @@
 #add-primogem-button {
     height: 33px;
     padding: 0 4px 0 9px;
+    transition: 0.1s;
+}
+#add-primogem-button:hover {
+    cursor: url('./assets/genshin-cursor.png'), pointer;
+}
+#add-primogem-button:active {
+    filter: brightness(120%) drop-shadow(0 0 10px rgba(255, 255, 255, 0.5));
 }
 #fate-icon {
     height: 80%;
@@ -170,4 +184,32 @@
     #fate-count-container {
         margin-left: 0;
     }
+}
+
+#skip-wish-animation-button {
+    cursor: url('./assets/genshin-cursor.png'), pointer;
+    font-size: 24px;
+    color: rgba(255, 255, 255, 0.9);
+    position: absolute;
+    top: min(5vw, 40px);
+    right: min(6vw, 70px);
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    user-select: none;
+    opacity: 1;
+    transition: color 0.2s, filter 0.2s, visibility 0s, opacity 0.2s linear;
+}
+#skip-wish-animation-button:active {
+    color: white;
+    filter: drop-shadow(0 0 5px white);
+}
+#skip-wish-arrow {
+    height: 18px;
+    margin-left: 8px;
+}
+.hidden {
+    visibility: hidden !important;
+    opacity: 0 !important;
 }

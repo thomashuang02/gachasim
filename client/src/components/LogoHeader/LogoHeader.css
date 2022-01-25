@@ -1,0 +1,21 @@
+.logo-header {
+    position: fixed;
+    color: white;
+    top: 30px;
+    z-index: 100;
+    background: rgba(0, 0, 0, 0.4);
+    padding: 10px 20px;
+    text-align: center;
+    border-radius: 10px;
+    --webkit-user-select: none;  /* Chrome all / Safari all */
+    -moz-user-select: none;     /* Firefox all */
+    -ms-user-select: none;      /* IE 10+ */
+    user-select: none;
+}
+.gachasim {
+    font-size: 32px;
+    font-weight: 900;
+}
+.by-patapus {
+    font-size: 14px;
+}

@@ -15,12 +15,19 @@ import primogemIcon from './assets/items/primogem.png';
 import intertwinedFate from './assets/items/intertwined-fate.png';
 import acquaintFate from './assets/items/acquaint-fate.png';
 import addPrimogemButton from './assets/buttons/add-primogem-button.png';
+import skipWishArrow from './assets/buttons/skip-wish-arrow.png';
 
 const CURRENT_VERSION = '2.4.1';
+
 
 const fadeBannerIn = () => {
   const bannerImageContainer = document.getElementById('banner-image-container');
   bannerImageContainer.classList.remove('banner-sweeping');
+}
+
+const showSkipWishButton = () => {
+  const skipWishButton = document.getElementById('skip-wish-animation-button');
+  skipWishButton.classList.remove('hidden');
 }
 
 const GenshinImpact = (props) => {
@@ -183,6 +190,17 @@ const GenshinImpact = (props) => {
     </>
   );
 
+  const wishAnimationComponent = (
+    <>
+      <div id='skip-wish-animation-button' className='hidden' onClick={()=>setShowWishAnimation(false)}>
+        Skip <img id='skip-wish-arrow' src={skipWishArrow} alt='skip wish'></img>
+      </div>
+      <video onClick={()=>showSkipWishButton()}autoPlay muted id='wish-animation' onEnded={()=>setShowWishAnimation(false)}>
+        <source src={require(`${wishAnimation}`)} type='video/mp4' />
+      </video>
+    </>
+  );
+
   return (
     <div id='genshin-wish-page' className='gacha-page'>
       <GachaHeader logo={GenshinImpactLogo} />
@@ -190,9 +208,7 @@ const GenshinImpact = (props) => {
         {
           showWishAnimation 
           ?
-          <video autoPlay muted id='wish-animation' onEnded={()=>setShowWishAnimation(false)}>
-            <source src={require(`${wishAnimation}`)} type='video/mp4' />
-          </video>
+          wishAnimationComponent
           :
           wishUI
         }
