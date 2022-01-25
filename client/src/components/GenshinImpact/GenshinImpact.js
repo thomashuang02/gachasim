@@ -5,6 +5,7 @@ import GenshinImpactLogo from './assets/genshin-impact-logo.png';
 import GachaHeader from '../GachaHeader/GachaHeader';
 import {wishButtonBank, wishAnimationBank, bannerBank} from './genshinData';
 import { useNavigate } from 'react-router-dom';
+import Modal from 'react-modal';
 
 //permanent icons
 import wishIcon from './assets/wish-icon.png';
@@ -16,6 +17,9 @@ import intertwinedFate from './assets/items/intertwined-fate.png';
 import acquaintFate from './assets/items/acquaint-fate.png';
 import addPrimogemButton from './assets/buttons/add-primogem-button.png';
 import skipWishArrow from './assets/buttons/skip-wish-arrow.png';
+import primogemBlurb from './assets/blurbs/primogem-blurb.png';
+import acquaintFateBlurb from './assets/blurbs/acquaint-fate-blurb.png';
+import intertwinedFateBlurb from './assets/blurbs/intertwined-fate-blurb.png';
 
 const CURRENT_VERSION = '2.4.1';
 
@@ -142,6 +146,16 @@ const GenshinImpact = (props) => {
     }
   }
 
+  const [blurbSrc, setBlurbSrc] = useState(primogemBlurb);
+  const [blurbText, setBlurbText] = useState(null);
+  const [blurbIsOpen, setBlurbIsOpen] = useState(false);
+  const showBlurb = (src, text) => {
+    setBlurbSrc(src);
+    setBlurbText(text);
+    setBlurbIsOpen(true);
+  }
+  const closeBlurb = () => setBlurbIsOpen(false);
+
   const wishUI = (
     <>
       <div className='top-menu-container'>
@@ -153,14 +167,23 @@ const GenshinImpact = (props) => {
         </div>
 
         <div id='top-right-menu'>
-          <span id='primogem-count-container'>
-            <img id='primogem-icon' src={primogemIcon} alt='primogem' />
-            <span id='primogem-count'>
-              { numPrimogems }
+          <span id='primogem-count-container' onClick={()=>showBlurb(primogemBlurb, false)}>
+            <span id='primogem-count-wrapper'>
+              <img id='primogem-icon' src={primogemIcon} alt='primogem' />
+              <span id='primogem-count'>
+                { numPrimogems }
+              </span>
             </span>
-            <img id='add-primogem-button' src={addPrimogemButton} alt='add primogem button' />
+            <img id='add-primogem-button' onClick={(e)=>{
+                e.stopPropagation();
+                console.log('add primogems')}
+              } src={addPrimogemButton} alt='add primogem button' />
           </span>
-          <span id='fate-count-container'>
+          <span id='fate-count-container' onClick={
+            isStandard 
+            ? ()=>showBlurb(acquaintFateBlurb, `Owned: ${numAcquaintFates}`) 
+            : ()=>showBlurb(intertwinedFateBlurb, `Owned: ${numIntertwinedFates}`)
+            }>
             <img id='fate-icon' 
               src={isStandard ? acquaintFate : intertwinedFate} 
               alt={`${isStandard ? 'acquaint fate' : 'intertwined fate'}`} />
@@ -171,6 +194,26 @@ const GenshinImpact = (props) => {
           <img id='close-wish-button' src={closeWishButton} onClick={()=>navigate('/gacha')} alt='close wish button' />
         </div>
       </div>
+
+      <Modal
+        isOpen={blurbIsOpen}
+        contentLabel='blurb'
+        onRequestClose={closeBlurb}
+        className='blurb-modal'
+        overlayClassName='blurb-overlay'
+        parentSelector={
+          () => document.querySelector('.gacha-area')}
+        ariaHideApp={false}
+        closeTimeoutMS={200}
+      >
+        <div className='blurb-container'>
+          <img className='blurb-image' src={blurbSrc} alt='blurb' />
+          { blurbText ? 
+          <div className='blurb-text'>
+            { blurbText }
+          </div> : null}
+        </div>
+      </Modal>
 
       <img id='change-banner-left' src={changeBannerLeft} alt='change banner left' onClick={()=>rotateBanner(false)}/>
 

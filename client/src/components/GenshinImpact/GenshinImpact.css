@@ -74,7 +74,6 @@
     position: absolute;
     bottom: 30px;
     right: 4vw;
-    z-index: 1;
 }
 .wish-button {
     width: min(40vw, 300px);
@@ -139,6 +138,14 @@
 #fate-count, #primogem-count {
     font-size: 24px;
 }
+#primogem-count-wrapper {
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+#primogem-count-wrapper:active #primogem-icon, #fate-count-container:active #fate-icon {
+    filter: opacity(70%);
+}
 #fate-count {
     margin-right: 15px;
 }
@@ -156,14 +163,14 @@
 }
 #add-primogem-button {
     height: 33px;
-    padding: 0 4px 0 9px;
+    padding: 0 4px 0 15px;
     transition: 0.1s;
 }
 #add-primogem-button:hover {
     cursor: url('./assets/genshin-cursor.png'), pointer;
 }
 #add-primogem-button:active {
-    filter: brightness(120%) drop-shadow(0 0 10px rgba(255, 255, 255, 0.5));
+    filter: opacity(50%);
 }
 #fate-icon {
     height: 80%;
@@ -180,6 +187,9 @@
     #top-right-menu {
         flex-direction: column;
         align-items: start;
+    }
+    #primogem-count-container {
+        margin-bottom: 10px;
     }
     #fate-count-container {
         margin-left: 0;
@@ -199,7 +209,7 @@
     align-items: center;
     user-select: none;
     opacity: 1;
-    transition: color 0.2s, filter 0.2s, visibility 0s, opacity 0.2s linear;
+    transition: color 0.2s, filter 0.1s, visibility 0s, opacity 0.2s linear;
 }
 #skip-wish-animation-button:active {
     color: white;
@@ -212,4 +222,62 @@
 .hidden {
     visibility: hidden !important;
     opacity: 0 !important;
+}
+.blurb-overlay {
+    position: absolute;
+    top: -100%;
+    left: -100%;
+    right: -100%;
+    bottom: -100%;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.6);
+    z-index: 0;
+}
+.blurb-modal {
+    width: 656px;
+    height: auto;
+    position: relative;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+}
+.blurb-container {
+    display: flex;
+    flex-direction: column;
+}
+.blurb-image {
+    width: 100%;
+}
+.blurb-text {
+    position: absolute;
+    bottom: 0;
+    padding: 2.2% 0;
+    width: 100%;
+    text-align: center;
+    font-size: 30px;
+    color: #495366;
+}
+/* modal animation */
+.ReactModal__Overlay {
+    transform: scale(0.9);
+    opacity: 0;
+    transition: .2s;
+}
+.ReactModal__Overlay--after-open {
+    transform: scale(1);
+    opacity: 1;
+}
+.ReactModal__Overlay--before-close {
+    transform: scale(0.9);
+    opacity: 0;
+}
+@media screen and (max-width: 730px) {
+    .blurb-modal {
+        width: 90vw;
+    }
+    .blurb-text {
+        font-size: 4.1vw;
+    }
 }
