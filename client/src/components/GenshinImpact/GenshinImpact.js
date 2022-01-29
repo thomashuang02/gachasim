@@ -18,6 +18,8 @@ import acquaintFate from './assets/items/acquaint-fate.png';
 import addPrimogemButton from './assets/buttons/add-primogem-button.png';
 import skipWishArrow from './assets/buttons/skip-wish-arrow.png';
 import genesisCrystal from './assets/items/genesis-crystal.png';
+import cancelIcon from './assets/buttons/cancel-icon.png';
+import confirmIcon from './assets/buttons/confirm-icon.png';
 
 //modals
 import primogemBlurb from './assets/blurbs/primogem-blurb.png';
@@ -27,7 +29,7 @@ import addPrimogemBlurb from './assets/blurbs/add-primogem-blurb.png';
 import genesisCrystalBlurb from './assets/blurbs/genesis-crystal-blurb.png';
 
 const CURRENT_VERSION = '2.4.1';
-
+const MAX_PRIMOGEMS = 999999999999;
 
 const fadeBannerIn = () => {
   const bannerImageContainer = document.getElementById('banner-image-container');
@@ -96,7 +98,7 @@ const GenshinImpact = (props) => {
   }, [activeBanner, numAcquaintFates, numIntertwinedFates]); // eslint-disable-line react-hooks/exhaustive-deps
 
   /* -------------------------------- primogems ------------------------------- */
-  const [numPrimogems, setNumPrimogems] = useState(160000);
+  const [numPrimogems, setNumPrimogems] = useState(80000);
   const addPrimogems = (n) => {
     setNumPrimogems(prev => prev + n);
   }
@@ -166,11 +168,46 @@ const GenshinImpact = (props) => {
       </div> : null}
     </div>
   )
+  const [primogemQuantity, setPrimogemQuantity] = useState(1);
   const addPrimogemModal = (
     <div className='blurb-container'>
       <img className='blurb-image add-primogem-image' src={addPrimogemBlurb} alt='add primogem modal' />
-      <div id='add-primogem-cancel-button' onClick={()=>closeAddPrimogemModal()} />
-      <div id='add-primogem-exchange-button' onClick={()=>{addPrimogems(1); closeAddPrimogemModal();}} />
+      <input id='primogem-quantity' type='number' min='0' placeholder='0' max={MAX_PRIMOGEMS-numPrimogems} value={primogemQuantity} 
+        onChange={e=>{
+          const newValue = e.target.value;
+          console.log(e.target.value);
+          setPrimogemQuantity(newValue === '' ? 0 : newValue);
+        }}/>
+
+      <div className={`${primogemQuantity <= 0 ? 'unclickable-1' : ''}`} 
+        id='decrement-primogem-quantity' onClick={()=>setPrimogemQuantity(prev=>Math.max(prev-1, 0))} />
+      <div className={`${primogemQuantity >= MAX_PRIMOGEMS-numPrimogems ? 'unclickable-1' : ''}`}
+        id='increment-primogem-quantity' onClick={()=>setPrimogemQuantity(prev=>Math.min(prev+1, MAX_PRIMOGEMS))} />
+
+      <div className={`flash-button ${primogemQuantity <= 0 ? 'unclickable-2' : ''}`} 
+        id='minus-100' onClick={
+          ()=>setPrimogemQuantity(prev=>Math.max(prev-100, 0))}>
+        -100
+      </div>
+      <div className={`flash-button ${primogemQuantity >= MAX_PRIMOGEMS-numPrimogems ? 'unclickable-2' : ''}`}
+        id='plus-100' onClick={
+          ()=>setPrimogemQuantity(prev=>Math.min(prev+100, MAX_PRIMOGEMS))}>
+        +100
+      </div>
+      <div className={`flash-button ${primogemQuantity >= MAX_PRIMOGEMS-numPrimogems ? 'unclickable-2' : ''}`} 
+        id='max' onClick={
+          ()=>setPrimogemQuantity(MAX_PRIMOGEMS-numPrimogems)}>
+        Max
+      </div>
+
+      <div className='flash-button' id='add-primogem-cancel-button' onClick={()=>closeAddPrimogemModal()}>
+        <img id='cancel-icon' src={cancelIcon} alt='cancel' />
+        Cancel
+      </div>
+      <div className={`flash-button ${primogemQuantity <= 0 || numPrimogems >= MAX_PRIMOGEMS ? 'unclickable-2' : ''}`} id='add-primogem-exchange-button' onClick={()=>{addPrimogems(primogemQuantity); closeAddPrimogemModal();}}>
+        <img id='confirm-icon' src={confirmIcon} alt='confirm' />
+        Exchange
+      </div>
     </div>
   );
   const addPrimogemHeader = (
@@ -218,6 +255,7 @@ const GenshinImpact = (props) => {
     setInfoModalIsOpen(false);
   }
   const closeAddPrimogemModal = () => {
+    setPrimogemQuantity(1);
     hideAddPrimogemHeader();
     setAddPrimogemModalIsOpen(false);
   };

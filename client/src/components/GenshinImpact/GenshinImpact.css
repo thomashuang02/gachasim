@@ -1,4 +1,4 @@
-#genshin-wish-page img {
+.gacha-area {
     user-select: none;
 }
 #genshin-wish-page .gacha-area {
@@ -199,6 +199,9 @@
     #fate-count-container {
         margin-left: 0;
     }
+    #genesis-crystal-count-container {
+        margin-left: 0;
+    }
 }
 
 #skip-wish-animation-button {
@@ -212,7 +215,6 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    user-select: none;
     opacity: 1;
     transition: color 0.2s, filter 0.1s, visibility 0s, opacity 0.2s linear;
 }
@@ -287,11 +289,6 @@
         font-size: 4.1vw;
     }
 }
-@media screen and (max-width: 1300px) {
-    .add-primogem-image {
-        width: 95vw !important;
-    }
-}
 #add-primogem-header {
     z-index: 1;
     position: absolute;
@@ -311,13 +308,174 @@
     position: absolute;
     width: 39%;
     height: 9.7%;
-    background: rgba(255, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ECE5D8;
+    font-size: 36px;
+    padding-left: 3.5%;
+    background-color: #4A5366;
 }
 #add-primogem-cancel-button {
-    bottom: 7%;
-    left: 8.2%;
+    bottom: 7.1%;
+    left: 8.3%;
 }
 #add-primogem-exchange-button {
     bottom: 7%;
-    right: 8.2%;
+    right: 8.3%;
+}
+#cancel-icon, #confirm-icon {
+    position: absolute;
+    left: 2.8%;
+    height: 70%;
+    top: 50%;
+    transform: translateY(-50%);
+}
+#primogem-quantity {
+    position: absolute;
+    top: 49.8%;
+    width: 30%;
+    text-align: center;
+    color: #474F62;
+    font-size: 39px;
+    left: 0;
+    right: 0;
+    margin: auto
+}
+#primogem-quantity::-webkit-outer-spin-button, #primogem-quantity::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+#primogem-quantity {
+    -moz-appearance: textfield;
+}
+#primogem-quantity::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+    color: #474F62;
+    opacity: 1; /* Firefox */
+}
+  
+#primogem-quantity:-ms-input-placeholder { /* Internet Explorer 10-11 */
+    color: #474F62;
+}
+  
+#primogem-quantity::-ms-input-placeholder { /* Microsoft Edge */
+    color: #474F62;
+}
+#increment-primogem-quantity, #decrement-primogem-quantity {
+    border-radius: 100px;
+    position: absolute;
+    height: 7%;
+    width: 5.2%;
+    top: 49%;
+    transition: 0.2s;
+}
+#increment-primogem-quantity:active, #decrement-primogem-quantity:active, .unclickable-1 {
+    background: rgba(255, 255, 255, 0.521);
+}
+.flash-button {
+    filter: drop-shadow(0px 2px 3px #4a536683);
+    transition: color 0.2s, background 0.2s;
+}
+.flash-button:active {
+    background: #E5E2DB !important;
+    -webkit-animation: 0.15s linear flash;
+    -moz-animation: 0.15s linear flash;
+    -ms-animation: 0.15s linear flash;
+    -o-animation: 0.15s linear flash;
+    animation: 0.15s linear flash;
+}
+.flash-button:after {
+    content: '';
+    position: absolute;
+    border-radius: 100px;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+}
+.flash-button:active {
+    filter: drop-shadow(0px 0px 5px #FFECCA);
+}
+#add-primogem-cancel-button:active, #add-primogem-exchange-button:active {
+    color: #4A5366 !important;
+    border: 2px solid #4A5366 !important;
+}
+#add-primogem-cancel-button:active:after, #add-primogem-exchange-button:active:after {
+    background: #ffe5914b !important;
+}
+#minus-100:active, #plus-100:active, #max:active {
+    color: white;
+    border: 2px solid #4a536652 !important;
+}
+#minus-100:active, #plus-100:active, #max:active {
+    background: #E4D0AF !important;
+}
+
+@keyframes flash {
+    0% {
+        color: #4A5366 !important;
+        filter: drop-shadow(0px 2px 3px #4a536683) brightness(180%);
+    }
+}
+
+#decrement-primogem-quantity {
+    left: 28%;
+}
+#increment-primogem-quantity {
+    right: 28%;
+} 
+#minus-100, #plus-100, #max, #add-primogem-cancel-button, #add-primogem-exchange-button {
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+}
+#minus-100, #plus-100, #max {
+    position: absolute;
+    border-radius: 100px;
+    bottom: 33.1%;
+    width: 13.4%;
+    height: 6%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ECE5D8;
+    font-size: 28px;
+    background-color: #4A5366;
+}
+#minus-100 {
+    left: 28.3%;
+}
+#max {
+    right: 28.3%;
+}
+#plus-100 {
+    left: 0;
+    right: 0;
+    margin: auto;
+}
+@media screen and (max-width: 1300px) {
+    .add-primogem-image {
+        width: 95vw !important;
+    }
+    #primogem-quantity {
+        font-size: 3.05vw !important;
+    }
+    #add-primogem-cancel-button, #add-primogem-exchange-button {
+        font-size: 2.8vw !important;
+    }
+    #minus-100, #plus-100, #max {
+        font-size: 2.1vw !important;
+    }
+}
+.unclickable-2 {
+    border: 2px solid #D4D2CF !important;
+    color: #D4D2CF !important;
+    background-color: #E5E2DB !important;
+    pointer-events: none;
+}
+.unclickable-2 * {
+    filter: opacity(25%);
+}
+.unclickable-1 {
+    pointer-events: none;
 }
