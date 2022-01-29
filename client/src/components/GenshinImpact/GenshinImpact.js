@@ -17,9 +17,14 @@ import intertwinedFate from './assets/items/intertwined-fate.png';
 import acquaintFate from './assets/items/acquaint-fate.png';
 import addPrimogemButton from './assets/buttons/add-primogem-button.png';
 import skipWishArrow from './assets/buttons/skip-wish-arrow.png';
+import genesisCrystal from './assets/items/genesis-crystal.png';
+
+//modals
 import primogemBlurb from './assets/blurbs/primogem-blurb.png';
 import acquaintFateBlurb from './assets/blurbs/acquaint-fate-blurb.png';
 import intertwinedFateBlurb from './assets/blurbs/intertwined-fate-blurb.png';
+import addPrimogemBlurb from './assets/blurbs/add-primogem-blurb.png';
+import genesisCrystalBlurb from './assets/blurbs/genesis-crystal-blurb.png';
 
 const CURRENT_VERSION = '2.4.1';
 
@@ -37,11 +42,10 @@ const showSkipWishButton = () => {
 const GenshinImpact = (props) => {
   const navigate = useNavigate();
 
-  //WISH BUTTONS
   const [wishX1Button, setWishX1Button] = useState(wishButtonBank.x1.intertwined.sufficient);
   const [wishX10Button, setWishX10Button] = useState(wishButtonBank.x10.intertwined.sufficient);
 
-  //BANNERS
+  /* --------------------------------- banners -------------------------------- */
   const [activeVersionBanners, setActiveVersionBanners] = useState(bannerBank.focus[CURRENT_VERSION]);
   //NOTE: make sure that when active version banners change, active banner index is reset to 0!
   const availableBanners = [...activeVersionBanners, bannerBank.standard];
@@ -55,7 +59,7 @@ const GenshinImpact = (props) => {
     setActiveBannerIndex(prev => (numBanners + prev + (right ? 1: -1)) % numBanners);
   }
 
-  //FATES
+  /* ---------------------------------- fates --------------------------------- */
   const [numAcquaintFates, setNumAcquaintFates] = useState(3);
   const [numIntertwinedFates, setNumIntertwinedFates] = useState(226);
   const [NUM_FATES, SET_NUM_FATES] = isStandard ? [numAcquaintFates, setNumAcquaintFates] : [numIntertwinedFates, setNumIntertwinedFates];
@@ -91,14 +95,17 @@ const GenshinImpact = (props) => {
     }
   }, [activeBanner, numAcquaintFates, numIntertwinedFates]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  //PRIMOGEMS
+  /* -------------------------------- primogems ------------------------------- */
   const [numPrimogems, setNumPrimogems] = useState(160000);
+  const addPrimogems = (n) => {
+    setNumPrimogems(prev => prev + n);
+  }
 
-  //WISH ANIMATION
+  /* ----------------------------- wish animation ----------------------------- */
   const [wishAnimation, setWishAnimation] = useState(wishAnimationBank.multi.fourStar);
   const [showWishAnimation, setShowWishAnimation] = useState(false);
 
-  //ROLLING
+  /* ------------------------------ rolling logic ----------------------------- */
   const roll10x = () => {
     if(NUM_FATES >= 10) {
       const rolledFiveStar = false;
@@ -146,16 +153,76 @@ const GenshinImpact = (props) => {
     }
   }
 
-  const [blurbSrc, setBlurbSrc] = useState(primogemBlurb);
-  const [blurbText, setBlurbText] = useState(null);
-  const [blurbIsOpen, setBlurbIsOpen] = useState(false);
-  const showBlurb = (src, text) => {
-    setBlurbSrc(src);
-    setBlurbText(text);
-    setBlurbIsOpen(true);
-  }
-  const closeBlurb = () => setBlurbIsOpen(false);
+  const [infoModalIsOpen, setInfoModalIsOpen] = useState(false);
+  const [addPrimogemModalIsOpen, setAddPrimogemModalIsOpen] = useState(false);
 
+  /* --------------------------------- modals --------------------------------- */
+  const generateInfoModal = (src, text) => (
+    <div className='blurb-container'>
+      <img className='blurb-image info-image' src={src} alt='info modal' />
+      { text ? 
+      <div className='blurb-num-fates'>
+        { text }
+      </div> : null}
+    </div>
+  )
+  const addPrimogemModal = (
+    <div className='blurb-container'>
+      <img className='blurb-image add-primogem-image' src={addPrimogemBlurb} alt='add primogem modal' />
+      <div id='add-primogem-cancel-button' onClick={()=>closeAddPrimogemModal()} />
+      <div id='add-primogem-exchange-button' onClick={()=>{addPrimogems(1); closeAddPrimogemModal();}} />
+    </div>
+  );
+  const addPrimogemHeader = (
+    <div id='add-primogem-header' className='hidden'>
+      <span id='primogem-count-container' onClick={()=>showInfoModal(primogemBlurb, false)}>
+          <span id='primogem-count-wrapper'>
+            <img id='primogem-icon' src={primogemIcon} alt='primogem' />
+            <span id='primogem-count'>
+              { numPrimogems }
+            </span>
+          </span>
+        </span>
+        <span id='genesis-crystal-count-container' onClick={()=>showInfoModal(genesisCrystalBlurb, false)}>
+          <img id='genesis-crystal-icon' 
+            src={genesisCrystal} 
+            alt='genesis crystal' />
+          <span id='genesis-crystal-count'>
+            &#8734;
+          </span>
+        </span>
+    </div>
+  );
+
+  const showAddPrimogemHeader = () => {
+    const addPrimogemHeader = document.getElementById('add-primogem-header');
+    addPrimogemHeader.classList.remove('hidden');
+  }
+  const hideAddPrimogemHeader = () => {
+    const addPrimogemHeader = document.getElementById('add-primogem-header');
+    addPrimogemHeader.classList.add('hidden');
+  }
+
+  const [infoBlurbElement, setInfoBlurbElement] = useState(generateInfoModal(primogemBlurb, false));
+
+  const showInfoModal = (src, text) => {
+    setInfoBlurbElement(generateInfoModal(src, text));
+    setInfoModalIsOpen(true);
+  }
+  const showAddPrimogemModal = (src, text) => {
+    showAddPrimogemHeader();
+    setInfoBlurbElement(addPrimogemModal);
+    setAddPrimogemModalIsOpen(true);
+  }
+  const closeInfoModal = () => {
+    setInfoModalIsOpen(false);
+  }
+  const closeAddPrimogemModal = () => {
+    hideAddPrimogemHeader();
+    setAddPrimogemModalIsOpen(false);
+  };
+
+  /* --------------------------------- wish UI -------------------------------- */
   const wishUI = (
     <>
       <div className='top-menu-container'>
@@ -167,7 +234,7 @@ const GenshinImpact = (props) => {
         </div>
 
         <div id='top-right-menu'>
-          <span id='primogem-count-container' onClick={()=>showBlurb(primogemBlurb, false)}>
+          <span id='primogem-count-container' onClick={()=>showInfoModal(primogemBlurb, false)}>
             <span id='primogem-count-wrapper'>
               <img id='primogem-icon' src={primogemIcon} alt='primogem' />
               <span id='primogem-count'>
@@ -176,13 +243,13 @@ const GenshinImpact = (props) => {
             </span>
             <img id='add-primogem-button' onClick={(e)=>{
                 e.stopPropagation();
-                console.log('add primogems')}
-              } src={addPrimogemButton} alt='add primogem button' />
+                showAddPrimogemModal();
+              }} src={addPrimogemButton} alt='add primogem button' />
           </span>
           <span id='fate-count-container' onClick={
             isStandard 
-            ? ()=>showBlurb(acquaintFateBlurb, `Owned: ${numAcquaintFates}`) 
-            : ()=>showBlurb(intertwinedFateBlurb, `Owned: ${numIntertwinedFates}`)
+            ? ()=>showInfoModal(acquaintFateBlurb, `Owned: ${numAcquaintFates}`) 
+            : ()=>showInfoModal(intertwinedFateBlurb, `Owned: ${numIntertwinedFates}`)
             }>
             <img id='fate-icon' 
               src={isStandard ? acquaintFate : intertwinedFate} 
@@ -195,10 +262,12 @@ const GenshinImpact = (props) => {
         </div>
       </div>
 
+      { addPrimogemHeader }
+
       <Modal
-        isOpen={blurbIsOpen}
+        isOpen={addPrimogemModalIsOpen}
         contentLabel='blurb'
-        onRequestClose={closeBlurb}
+        onRequestClose={closeAddPrimogemModal}
         className='blurb-modal'
         overlayClassName='blurb-overlay'
         parentSelector={
@@ -206,13 +275,21 @@ const GenshinImpact = (props) => {
         ariaHideApp={false}
         closeTimeoutMS={200}
       >
-        <div className='blurb-container'>
-          <img className='blurb-image' src={blurbSrc} alt='blurb' />
-          { blurbText ? 
-          <div className='blurb-text'>
-            { blurbText }
-          </div> : null}
-        </div>
+        { addPrimogemModal }
+      </Modal>
+
+      <Modal
+        isOpen={infoModalIsOpen}
+        contentLabel='blurb'
+        onRequestClose={closeInfoModal}
+        className='blurb-modal'
+        overlayClassName='blurb-overlay front'
+        parentSelector={
+          () => document.querySelector('.gacha-area')}
+        ariaHideApp={false}
+        closeTimeoutMS={200}
+      >
+        { infoBlurbElement }
       </Modal>
 
       <img id='change-banner-left' src={changeBannerLeft} alt='change banner left' onClick={()=>rotateBanner(false)}/>
