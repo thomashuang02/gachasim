@@ -31,6 +31,19 @@ import genesisCrystalBlurb from './assets/blurbs/genesis-crystal-blurb.png';
 const CURRENT_VERSION = '2.4.1';
 const MAX_PRIMOGEMS = 999999999999;
 
+/* -------------------------------- API calls ------------------------------- */
+const getProfile = async () => {
+  const res = await axios.get('/api/genshin-impact/profile', 
+    {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`
+      }
+    });
+  console.log(res.data);
+  return res.data;
+}
+
+/* ---------------------------- useful functions ---------------------------- */
 const fadeBannerIn = () => {
   const bannerImageContainer = document.getElementById('banner-image-container');
   bannerImageContainer.classList.remove('banner-sweeping');
@@ -41,9 +54,137 @@ const showSkipWishButton = () => {
   skipWishButton.classList.remove('hidden');
 }
 
-const GenshinImpact = (props) => {
+/* ----------------------------- top right menu ----------------------------- */
+const TopRightMenu = (props) => {
   const navigate = useNavigate();
+  return (
+    <div id='top-right-menu'>
+      <span id='primogem-count-container' onClick={()=>props.showInfoModal(primogemBlurb, false)}>
+        <span id='primogem-count-wrapper'>
+          <img id='primogem-icon' src={primogemIcon} alt='primogem' />
+          <span id='primogem-count'>
+            { props.numPrimogems }
+          </span>
+        </span>
+        <img id='add-primogem-button' onClick={(e)=>{
+            e.stopPropagation();
+            props.showAddPrimogemModal();
+          }} src={addPrimogemButton} alt='add primogem button' />
+      </span>
+      <span id='fate-count-container' onClick={
+        props.isStandard 
+        ? ()=>props.showInfoModal(acquaintFateBlurb, `Owned: ${props.numAcquaintFates}`) 
+        : ()=>props.showInfoModal(intertwinedFateBlurb, `Owned: ${props.numIntertwinedFates}`)
+        }>
+        <img id='fate-icon' 
+          src={props.isStandard ? acquaintFate : intertwinedFate} 
+          alt={`${props.isStandard ? 'acquaint fate' : 'intertwined fate'}`} />
+        <span id='fate-count'>
+          { props.NUM_FATES }
+        </span>
+      </span>
+      <img id='close-wish-button' src={closeWishButton} onClick={()=>navigate('/gacha')} alt='close wish button' />
+    </div>
+  )
+}
 
+/* -------------------------- info modal component -------------------------- */
+const InfoModal = (props) => (
+  <div className='blurb-container'>
+    <img className='blurb-image info-image' src={props.src} alt='info modal' />
+    { props.text ? 
+    <div className='blurb-num-fates'>
+      { props.text }
+    </div> : null}
+  </div>
+)
+
+/* ---------------------- add primogem modal component ---------------------- */
+const AddPrimogemModal = (props) => {
+  const primogemQuantity = props.primogemQuantity;
+  const setPrimogemQuantity = props.setPrimogemQuantity;
+  const numPrimogems = props.numPrimogems;
+  const closeAddPrimogemModal = props.closeAddPrimogemModal;
+  const addPrimogems = props.addPrimogems;
+  
+  return (
+  <div className='blurb-container'>
+    <img className='blurb-image add-primogem-image' src={addPrimogemBlurb} alt='add primogem modal' />
+    <input id='primogem-quantity' type='number' min='0' placeholder='0' max={MAX_PRIMOGEMS-numPrimogems} value={primogemQuantity} 
+      onChange={e=>{
+        const newValue = e.target.value;
+        console.log(e.target.value);
+        setPrimogemQuantity(newValue === '' ? 0 : newValue);
+      }}/>
+
+    <div className={`${primogemQuantity <= 0 ? 'unclickable-1' : ''}`} 
+      id='decrement-primogem-quantity' onClick={()=>setPrimogemQuantity(prev=>Math.max(prev-1, 0))} />
+    <div className={`${primogemQuantity >= MAX_PRIMOGEMS-numPrimogems ? 'unclickable-1' : ''}`}
+      id='increment-primogem-quantity' onClick={()=>setPrimogemQuantity(prev=>Math.min(prev+1, MAX_PRIMOGEMS))} />
+
+    <div className={`flash-button ${primogemQuantity <= 0 ? 'unclickable-2' : ''}`} 
+      id='minus-100' onClick={
+        ()=>setPrimogemQuantity(prev=>Math.max(prev-100, 0))}>
+      -100
+    </div>
+    <div className={`flash-button ${primogemQuantity >= MAX_PRIMOGEMS-numPrimogems ? 'unclickable-2' : ''}`}
+      id='plus-100' onClick={
+        ()=>setPrimogemQuantity(prev=>Math.min(prev+100, MAX_PRIMOGEMS))}>
+      +100
+    </div>
+    <div className={`flash-button ${primogemQuantity >= MAX_PRIMOGEMS-numPrimogems ? 'unclickable-2' : ''}`} 
+      id='max' onClick={
+        ()=>setPrimogemQuantity(MAX_PRIMOGEMS-numPrimogems)}>
+      Max
+    </div>
+
+    <div className='flash-button' id='add-primogem-cancel-button' onClick={()=>closeAddPrimogemModal()}>
+      <img id='cancel-icon' src={cancelIcon} alt='cancel' />
+      Cancel
+    </div>
+    <div className={`flash-button ${primogemQuantity <= 0 || numPrimogems >= MAX_PRIMOGEMS ? 'unclickable-2' : ''}`} id='add-primogem-exchange-button' onClick={()=>{addPrimogems(primogemQuantity); closeAddPrimogemModal();}}>
+      <img id='confirm-icon' src={confirmIcon} alt='confirm' />
+      Exchange
+    </div>
+  </div>)
+};
+
+/* ------------------------ wish animation component ------------------------ */
+const WishAnimation = (props) => (
+  <>
+    <div id='skip-wish-animation-button' className='hidden' onClick={()=>props.setShowWishAnimation(false)}>
+      Skip <img id='skip-wish-arrow' src={skipWishArrow} alt='skip wish'></img>
+    </div>
+    <video onClick={()=>showSkipWishButton()}autoPlay muted id='wish-animation' onEnded={()=>props.setShowWishAnimation(false)}>
+      <source src={require(`${props.wishAnimation}`)} type='video/mp4' />
+    </video>
+  </>
+);
+
+/* ---------------------- header for add primogem menu ---------------------- */
+const AddPrimogemHeader = (props) => (
+  <div id='add-primogem-header' className='hidden'>
+    <span id='primogem-count-container' onClick={()=>props.showInfoModal(primogemBlurb, false)}>
+        <span id='primogem-count-wrapper'>
+          <img id='primogem-icon' src={primogemIcon} alt='primogem' />
+          <span id='primogem-count'>
+            { props.numPrimogems }
+          </span>
+        </span>
+      </span>
+      <span id='genesis-crystal-count-container' onClick={()=>props.showInfoModal(genesisCrystalBlurb, false)}>
+        <img id='genesis-crystal-icon' 
+          src={genesisCrystal} 
+          alt='genesis crystal' />
+        <span id='genesis-crystal-count'>
+          &#8734;
+        </span>
+      </span>
+  </div>
+);
+
+const GenshinImpact = (props) => {
+  /* ------------------------------ wish buttons ------------------------------ */
   const [wishX1Button, setWishX1Button] = useState(wishButtonBank.x1.intertwined.sufficient);
   const [wishX10Button, setWishX10Button] = useState(wishButtonBank.x10.intertwined.sufficient);
 
@@ -62,8 +203,8 @@ const GenshinImpact = (props) => {
   }
 
   /* ---------------------------------- fates --------------------------------- */
-  const [numAcquaintFates, setNumAcquaintFates] = useState(3);
-  const [numIntertwinedFates, setNumIntertwinedFates] = useState(226);
+  const [numAcquaintFates, setNumAcquaintFates] = useState(1);
+  const [numIntertwinedFates, setNumIntertwinedFates] = useState(1);
   const [NUM_FATES, SET_NUM_FATES] = isStandard ? [numAcquaintFates, setNumAcquaintFates] : [numIntertwinedFates, setNumIntertwinedFates];
 
   useEffect(() => {
@@ -99,9 +240,38 @@ const GenshinImpact = (props) => {
 
   /* -------------------------------- primogems ------------------------------- */
   const [numPrimogems, setNumPrimogems] = useState(80000);
-  const addPrimogems = (n) => {
-    setNumPrimogems(prev => prev + n);
+  const modifyUser = async newProps => {
+    const updatedUser = await axios.post('/api/genshin-impact/modify-user', newProps, 
+    {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`
+      }
+    });
+    updateUser(updatedUser);
   }
+  const modifyPrimogems = (n) => {
+    modifyUser({
+      numPrimogems: numPrimogems + n
+    });
+  }
+  
+  /* -------------------------------- user info ------------------------------- */
+  const updateUser = async (updatedUser) => {
+    let user;
+    if(updatedUser) {
+      user = updatedUser;
+    }
+    else {
+      user = await getProfile();
+    }
+    setNumPrimogems(user.numPrimogems);
+    setNumAcquaintFates(user.numAcquaintFates);
+    setNumIntertwinedFates(user.numIntertwinedFates);
+  }
+  //update user on initial page load
+  useEffect(() => {
+    updateUser();
+  }, []);
 
   /* ----------------------------- wish animation ----------------------------- */
   const [wishAnimation, setWishAnimation] = useState(wishAnimationBank.multi.fourStar);
@@ -155,81 +325,10 @@ const GenshinImpact = (props) => {
     }
   }
 
+  /* --------------------------------- modals --------------------------------- */
   const [infoModalIsOpen, setInfoModalIsOpen] = useState(false);
   const [addPrimogemModalIsOpen, setAddPrimogemModalIsOpen] = useState(false);
-
-  /* --------------------------------- modals --------------------------------- */
-  const generateInfoModal = (src, text) => (
-    <div className='blurb-container'>
-      <img className='blurb-image info-image' src={src} alt='info modal' />
-      { text ? 
-      <div className='blurb-num-fates'>
-        { text }
-      </div> : null}
-    </div>
-  )
   const [primogemQuantity, setPrimogemQuantity] = useState(1);
-  const addPrimogemModal = (
-    <div className='blurb-container'>
-      <img className='blurb-image add-primogem-image' src={addPrimogemBlurb} alt='add primogem modal' />
-      <input id='primogem-quantity' type='number' min='0' placeholder='0' max={MAX_PRIMOGEMS-numPrimogems} value={primogemQuantity} 
-        onChange={e=>{
-          const newValue = e.target.value;
-          console.log(e.target.value);
-          setPrimogemQuantity(newValue === '' ? 0 : newValue);
-        }}/>
-
-      <div className={`${primogemQuantity <= 0 ? 'unclickable-1' : ''}`} 
-        id='decrement-primogem-quantity' onClick={()=>setPrimogemQuantity(prev=>Math.max(prev-1, 0))} />
-      <div className={`${primogemQuantity >= MAX_PRIMOGEMS-numPrimogems ? 'unclickable-1' : ''}`}
-        id='increment-primogem-quantity' onClick={()=>setPrimogemQuantity(prev=>Math.min(prev+1, MAX_PRIMOGEMS))} />
-
-      <div className={`flash-button ${primogemQuantity <= 0 ? 'unclickable-2' : ''}`} 
-        id='minus-100' onClick={
-          ()=>setPrimogemQuantity(prev=>Math.max(prev-100, 0))}>
-        -100
-      </div>
-      <div className={`flash-button ${primogemQuantity >= MAX_PRIMOGEMS-numPrimogems ? 'unclickable-2' : ''}`}
-        id='plus-100' onClick={
-          ()=>setPrimogemQuantity(prev=>Math.min(prev+100, MAX_PRIMOGEMS))}>
-        +100
-      </div>
-      <div className={`flash-button ${primogemQuantity >= MAX_PRIMOGEMS-numPrimogems ? 'unclickable-2' : ''}`} 
-        id='max' onClick={
-          ()=>setPrimogemQuantity(MAX_PRIMOGEMS-numPrimogems)}>
-        Max
-      </div>
-
-      <div className='flash-button' id='add-primogem-cancel-button' onClick={()=>closeAddPrimogemModal()}>
-        <img id='cancel-icon' src={cancelIcon} alt='cancel' />
-        Cancel
-      </div>
-      <div className={`flash-button ${primogemQuantity <= 0 || numPrimogems >= MAX_PRIMOGEMS ? 'unclickable-2' : ''}`} id='add-primogem-exchange-button' onClick={()=>{addPrimogems(primogemQuantity); closeAddPrimogemModal();}}>
-        <img id='confirm-icon' src={confirmIcon} alt='confirm' />
-        Exchange
-      </div>
-    </div>
-  );
-  const addPrimogemHeader = (
-    <div id='add-primogem-header' className='hidden'>
-      <span id='primogem-count-container' onClick={()=>showInfoModal(primogemBlurb, false)}>
-          <span id='primogem-count-wrapper'>
-            <img id='primogem-icon' src={primogemIcon} alt='primogem' />
-            <span id='primogem-count'>
-              { numPrimogems }
-            </span>
-          </span>
-        </span>
-        <span id='genesis-crystal-count-container' onClick={()=>showInfoModal(genesisCrystalBlurb, false)}>
-          <img id='genesis-crystal-icon' 
-            src={genesisCrystal} 
-            alt='genesis crystal' />
-          <span id='genesis-crystal-count'>
-            &#8734;
-          </span>
-        </span>
-    </div>
-  );
 
   const showAddPrimogemHeader = () => {
     const addPrimogemHeader = document.getElementById('add-primogem-header');
@@ -240,15 +339,14 @@ const GenshinImpact = (props) => {
     addPrimogemHeader.classList.add('hidden');
   }
 
-  const [infoBlurbElement, setInfoBlurbElement] = useState(generateInfoModal(primogemBlurb, false));
+  const [infoBlurbElement, setInfoBlurbElement] = useState(<InfoModal src={primogemBlurb} text={false} />);
 
   const showInfoModal = (src, text) => {
-    setInfoBlurbElement(generateInfoModal(src, text));
+    setInfoBlurbElement(<InfoModal src={src} text={text} />);
     setInfoModalIsOpen(true);
   }
   const showAddPrimogemModal = (src, text) => {
     showAddPrimogemHeader();
-    setInfoBlurbElement(addPrimogemModal);
     setAddPrimogemModalIsOpen(true);
   }
   const closeInfoModal = () => {
@@ -270,37 +368,11 @@ const GenshinImpact = (props) => {
             Wish
           </span>
         </div>
-
-        <div id='top-right-menu'>
-          <span id='primogem-count-container' onClick={()=>showInfoModal(primogemBlurb, false)}>
-            <span id='primogem-count-wrapper'>
-              <img id='primogem-icon' src={primogemIcon} alt='primogem' />
-              <span id='primogem-count'>
-                { numPrimogems }
-              </span>
-            </span>
-            <img id='add-primogem-button' onClick={(e)=>{
-                e.stopPropagation();
-                showAddPrimogemModal();
-              }} src={addPrimogemButton} alt='add primogem button' />
-          </span>
-          <span id='fate-count-container' onClick={
-            isStandard 
-            ? ()=>showInfoModal(acquaintFateBlurb, `Owned: ${numAcquaintFates}`) 
-            : ()=>showInfoModal(intertwinedFateBlurb, `Owned: ${numIntertwinedFates}`)
-            }>
-            <img id='fate-icon' 
-              src={isStandard ? acquaintFate : intertwinedFate} 
-              alt={`${isStandard ? 'acquaint fate' : 'intertwined fate'}`} />
-            <span id='fate-count'>
-              { NUM_FATES }
-            </span>
-          </span>
-          <img id='close-wish-button' src={closeWishButton} onClick={()=>navigate('/gacha')} alt='close wish button' />
-        </div>
+        <TopRightMenu showInfoModal={showInfoModal} numPrimogems={numPrimogems} showAddPrimogemModal={showAddPrimogemModal}
+          isStandard={isStandard} numAcquaintFates={numAcquaintFates} numIntertwinedFates={numIntertwinedFates} NUM_FATES={NUM_FATES}/>
       </div>
 
-      { addPrimogemHeader }
+      <AddPrimogemHeader numPrimogems={numPrimogems} showInfoModal={showInfoModal} />
 
       <Modal
         isOpen={addPrimogemModalIsOpen}
@@ -313,7 +385,7 @@ const GenshinImpact = (props) => {
         ariaHideApp={false}
         closeTimeoutMS={200}
       >
-        { addPrimogemModal }
+        <AddPrimogemModal addPrimogems={modifyPrimogems} setPrimogemQuantity={setPrimogemQuantity} primogemQuantity={primogemQuantity} numPrimogems={numPrimogems} closeAddPrimogemModal={closeAddPrimogemModal} />
       </Modal>
 
       <Modal
@@ -348,17 +420,6 @@ const GenshinImpact = (props) => {
     </>
   );
 
-  const wishAnimationComponent = (
-    <>
-      <div id='skip-wish-animation-button' className='hidden' onClick={()=>setShowWishAnimation(false)}>
-        Skip <img id='skip-wish-arrow' src={skipWishArrow} alt='skip wish'></img>
-      </div>
-      <video onClick={()=>showSkipWishButton()}autoPlay muted id='wish-animation' onEnded={()=>setShowWishAnimation(false)}>
-        <source src={require(`${wishAnimation}`)} type='video/mp4' />
-      </video>
-    </>
-  );
-
   return (
     <div id='genshin-wish-page' className='gacha-page'>
       <GachaHeader logo={GenshinImpactLogo} />
@@ -366,7 +427,7 @@ const GenshinImpact = (props) => {
         {
           showWishAnimation 
           ?
-          wishAnimationComponent
+          <WishAnimation wishAnimation={wishAnimation} setShowWishAnimation={setShowWishAnimation} />
           :
           wishUI
         }

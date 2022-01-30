@@ -50,7 +50,7 @@ const Login = (props) => {
 
   useEffect(() => {
     if(localStorage.getItem('token')) {
-      navigate('/gacha')
+      navigate('/gacha');
     }
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 

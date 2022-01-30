@@ -18,6 +18,7 @@ const RequireAuthentication = props => {
         ).then(res => {
           setUsername(res.data.username);
         }).catch(err => {
+          localStorage.removeItem('token');
           setUsername(null);
           navigate('/login');
         })

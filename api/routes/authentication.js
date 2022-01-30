@@ -59,7 +59,19 @@ router.post('/register', (req, res, next) => {
                 const newUser = new User({
                     username: req.body.username,
                     password: hashedPassword,
-                    dateJoined: Date.now()
+                    GenshinImpact: {
+                        numPrimogems: 0,
+                        numGenesisCrystals: 0,
+                        numAcquaintFates: 0,
+                        numIntertwinedFates: 0,
+                        inventory: {
+                            characters: [],
+                            weapons: []
+                        },
+                        moneySpent: 0,
+                    },
+                    dateJoined: Date.now(),
+                    totalMoneySpent: 0
                 });
                 await newUser.save();
                 authenticate(req, res, next);
