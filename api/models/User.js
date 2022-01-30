@@ -25,7 +25,6 @@ const GenshinWeaponSchema = new mongoose.Schema({
 });
 const GenshinImpactSchema = new mongoose.Schema({
     numPrimogems: Number,
-    numGenesisCrystals: Number,
     numAcquaintFates: Number,
     numIntertwinedFates: Number,
     inventory: {

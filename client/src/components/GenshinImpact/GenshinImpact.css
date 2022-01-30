@@ -1,5 +1,6 @@
 .gacha-area {
     user-select: none;
+    transition: filter 0.2s;
 }
 #genshin-wish-page .gacha-area {
     background: url('./assets/genshin-impact-wish-sky.png') no-repeat 20% 0%; 
@@ -74,10 +75,14 @@
     position: absolute;
     bottom: 30px;
     right: 4vw;
+    width: min(65vw, 690px);
+    text-align: right;
 }
 .wish-button {
-    width: min(40vw, 300px);
-    margin: 0 1vw;
+    vertical-align:bottom;
+    margin-top: 10px;
+    width: max(50%, 200px);
+    padding: 0 1vw;
     transition: 0.1s;
     filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.2));
 }
@@ -241,8 +246,17 @@
     justify-content: center;
     background-color: rgba(0, 0, 0, 0.6);
 }
-.front {
+.z4 {
+    z-index: 4;
+}
+.z3 {
+    z-index: 3;
+}
+.z2 {
     z-index: 2;
+}
+.z1 {
+    z-index: 1;
 }
 .blurb-modal{
     align-items: center;
@@ -290,7 +304,6 @@
     }
 }
 #add-primogem-header {
-    z-index: 1;
     position: absolute;
     top: 0;
     padding: 2vh 7vw;
@@ -299,9 +312,8 @@
     align-items: center;
     justify-content: flex-end;
     color: white;
-    background-color: #26262ac9;
+    background-color: #26262ade;
     transition: 0.3s;
-    z-index: 1;
 }
 #add-primogem-cancel-button, #add-primogem-exchange-button {
     border-radius: 100px;
@@ -373,16 +385,21 @@
     background: rgba(255, 255, 255, 0.521);
 }
 .flash-button {
+    border: 2px solid transparent;
     filter: drop-shadow(0px 2px 3px #4a536683);
-    transition: color 0.2s, background 0.2s;
+    transition: color 0.2s, background 0.2s, border 0.4s;
+}
+.flash-button:hover {
+    border: 2px solid #FFE6B2;
+    transition: border 0.1s;
 }
 .flash-button:active {
     background: #E5E2DB !important;
-    -webkit-animation: 0.15s linear flash;
-    -moz-animation: 0.15s linear flash;
-    -ms-animation: 0.15s linear flash;
-    -o-animation: 0.15s linear flash;
-    animation: 0.15s linear flash;
+    -webkit-animation: 0.15s linear flash-1;
+    -moz-animation: 0.15s linear flash-1;
+    -ms-animation: 0.15s linear flash-1;
+    -o-animation: 0.15s linear flash-1;
+    animation: 0.15s linear flash-1;
 }
 .flash-button:after {
     content: '';
@@ -411,9 +428,8 @@
     background: #E4D0AF !important;
 }
 
-@keyframes flash {
+@keyframes flash-1 {
     0% {
-        color: #4A5366 !important;
         filter: drop-shadow(0px 2px 3px #4a536683) brightness(180%);
     }
 }
@@ -463,6 +479,9 @@
     #add-primogem-cancel-button, #add-primogem-exchange-button {
         font-size: 2.8vw !important;
     }
+    #genesis-crystals-consumed {
+        font-size: 2.5vw !important;
+    }
     #minus-100, #plus-100, #max {
         font-size: 2.1vw !important;
     }
@@ -478,4 +497,139 @@
 }
 .unclickable-1 {
     pointer-events: none;
+}
+#genesis-crystals-consumed {
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin: auto;
+    width: 50%;
+    font-size: 33px;
+    color: #495366;
+    bottom: 22.9%;
+    height: 5%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#small-genesis-crystal {
+    height: 100%;
+    filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.473));
+}
+
+#shop-button {
+    position: absolute;
+    bottom: 30px;
+    left: 5vw;
+    background-color: #E0DDD4;
+    color: #3B4355;
+    font-size: 17px;
+    padding: 5px 45px;
+    border-radius: 100px;
+    filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.2));
+    border: 2px solid transparent;
+    transition: 0.2s color, 0.2s background-color, 0.2s border;
+}
+#shop-button:hover {
+    border: 2px solid white;
+}
+#shop-button:active {
+    border: 2px solid #7D8EA0;
+    background-color: #D3D2BF;
+    -webkit-animation: 0.15s linear forwards flash-2;
+    -moz-animation: 0.15s linear forwards flash-2;
+    -ms-animation: 0.15s linear forwards flash-2;
+    -o-animation: 0.15s linear forwards flash-2;
+    animation: 0.15s linear forwards flash-2;
+}
+@keyframes flash-2 {
+    0% {
+        color: #8d5e00;
+        filter: drop-shadow(0 0 3px rgba(255, 255, 255, 0.473)) brightness(150%);
+    }
+    100% {
+        color: white;
+        filter: drop-shadow(0 0 3px rgba(255, 255, 255, 0.473));
+    }
+}
+.blur-backdrop {
+    backdrop-filter: blur(10px);
+    background-color: transparent;
+    background-image: linear-gradient(to bottom, #1c1e2c, transparent);
+}
+#purchase-with-primogems-container {
+    position: relative;
+    width: min(90vw, 690px);
+    margin: auto;
+    margin-bottom: min(70px, 10vw);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+#purchase-with-primogems {
+    position: absolute;
+    width: 69%;
+    z-index: 1;
+}
+#ribbon-bar {
+    width: 100%;
+    position: absolute;
+}
+#buy-options {
+    display: flex;
+}
+#buy-acquaint-fate-container, #buy-intertwined-fate-container {
+    flex: 1;
+    position: relative;
+    width: min(444px, 40vw);
+    height: min(444px, 40vw);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 8px;
+}
+#buy-acquaint-fate, #buy-intertwined-fate {
+    width: 93%;
+}
+#buy-acquaint-fate-hover, #buy-intertwined-fate-hover {
+    width: 100%;
+    filter: drop-shadow(0 0 10px #D6A456);
+}
+#buy-acquaint-fate, #buy-acquaint-fate-hover, #buy-intertwined-fate, #buy-intertwined-fate-hover {
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin: auto;
+    opacity: 1;
+    transition: 0.3s cubic-bezier(0,.75,.13,.98);
+}
+#shop-modal-header {
+    position: absolute;
+    top: 0;
+    padding: 30px 4vw;
+    width: 100vw;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    color: white;
+    transition: 0.3s;
+}
+#close-shop-modal {
+    height: 50px;
+    cursor: url('./assets/genshin-cursor.png'), pointer;
+    transition: filter 0.1s, opacity 0.3s;
+    opacity: 1;
+    margin-left: 3vw;
+}
+#close-shop-modal:active {
+    filter: brightness(120%) drop-shadow(0 0 10px rgba(255, 255, 255, 0.5));
+}
+#shop-modal-primogem-count {
+    height: 45px;
+    background-clip: padding-box;
+    border-radius: 100px;
+    border: 3px solid rgba(255, 255, 255, 0.1);
+    background-color: #26262a8a;
+    display: flex;
+    align-items: center;
 }

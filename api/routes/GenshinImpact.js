@@ -54,5 +54,33 @@ router.get('/profile',
         }
     }
 );
+router.post('/modify-user',
+    passport.authenticate('jwt', { session: false }),
+    async (req, res) => {
+        if(!req.user) {
+            res.status(403);
+        }
+        else {
+            const update = {}
+            for (const [key, value] of Object.entries(req.body)) {
+                update[`GenshinImpact.${key}`] = value;
+            }
+            console.log(req.body);
+            const user = await User.findOneAndUpdate({username: req.user.username}, update, {new:true});
+            if(user) {
+                console.log(user.GenshinImpact);
+                res.send(user.GenshinImpact);
+            }
+            else {
+                res.status(404).send(
+                    {
+                        error: true,
+                        message: `could not find that user.`
+                    }
+                );
+            }
+        }
+    }
+);
 
 module.exports = router;
