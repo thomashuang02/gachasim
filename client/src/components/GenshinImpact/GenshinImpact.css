@@ -506,6 +506,22 @@
         outline: 0.4vw solid #5C6983 !important;
         box-shadow: 0 0 0 0.6vw #E5E2DD !important;
     }
+    .genshin-item-name {
+        font-size: 3.1vw !important;
+    }
+    .genshin-item-description {
+        font-size: 2.16vw !important;
+    }
+    #item-to-purchase-primogem-count {
+        height: 3.5vw !important;
+        padding-right: 1.2% !important;
+    }
+    #item-to-purchase-primogem-count #primogem-count {
+        font-size: 1.85vw !important;
+    }
+    #item-to-purchase-primogem-count #primogem-icon {
+        height: 3.3vw !important;
+    }
 }
 .unclickable-2 {
     border: 2px solid #D4D2CF !important;
@@ -758,7 +774,8 @@
     display: inline-block;
 }
 .genshin-item-info {
-    padding: 15px 75px 0 0;
+    
+    padding: 1.5% 7% 0 0;
     color: #E5E2DD;
     display: flex;
     flex-direction: column;
@@ -793,8 +810,8 @@
     right: 2%;
     font-size: 20px;
     background: #E5E2DD;
-    width: 30px;
-    height: 30px;
+    width: 2.9%;
+    height: 14%;
     border-radius: 20px;    
 }
 .info-icon * {
@@ -806,8 +823,8 @@
     right: 0;
     margin: auto;
     top: 20%;
-    width: 6px;
-    height: 6px;
+    width: 20%;
+    height: 20%;
     border-radius: 5px;
 }
 .info-icon .info-icon-line {
@@ -815,12 +832,13 @@
     right: 0;
     margin: auto;
     bottom: 20%;
-    width: 5px;
-    height: 10px;
+    width: 16%;
+    height: 33%;
     border-radius: 5px;
 }
 .rating-star {
-    padding: 7px 4px 5px 0;
+    width: 4.25%;
+    padding: 1.1% 0.6% 0.7% 0;
     filter: drop-shadow(0 0 2px #6D5553);
 }
 #item-to-purchase-primogem-count {

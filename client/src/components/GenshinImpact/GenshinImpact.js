@@ -441,7 +441,6 @@ const ItemToPurchaseModal = (props) => {
       </div>
     </div>
     <div id='item-to-purchase-quantity'>{quantity}</div>
-    {maxQuantity}
     <input type='range' id='quantity-to-purchase' className='genshin-slider' min='0' max={maxQuantity} value={quantity} onChange={e=>setQuantity(Math.max(e.target.value, 1))}/>
 
     <CancelButton id='item-to-purchase-cancel-button' onClick={()=>closeItemToPurchaseModal()} text='Cancel' />
@@ -463,7 +462,7 @@ const ItemToPurchaseModal = (props) => {
 /* ------------------------- item to purchase header ------------------------ */
 const ItemToPurchaseHeader = (props) => (
   <div id='item-to-purchase-header' className={`${props.hidden ? 'hidden' : null} ${props.className}`}>
-    <PrimogemCount id='shop-modal-primogem-count' showInfoModal={showInfoModal} numPrimogems={numPrimogems} noAdd/>
+    <PrimogemCount id='shop-modal-primogem-count' showInfoModal={showInfoModal} numPrimogems={numPrimogems} showAddPrimogemModal={showAddPrimogemModal}/>
   </div>
 );
 
@@ -602,7 +601,7 @@ const InsufficientPrimogemsModal = props => {
 
   //item to purchase modal
   const showItemToPurchaseModal = (itemName) => {
-    setItemToPurchaseModal(ITEM_MODALS[itemName]);
+    setBuying(itemName === 'intertwinedFate' ? 'intertwinedFate' : 'acquaintFate');
     updateZIndex('itemToPurchase');
     showItemToPurchaseHeader();
     setItemToPurchaseModalIsOpen(true);
@@ -628,23 +627,19 @@ const InsufficientPrimogemsModal = props => {
   //item to purchase components
   const intertwinedFateDescription = `A fateful stone that connects dreams. Its glimmers can entwine fates and connect dreams, just as how its glimmers link stars into the shapes of a heart's desires.`;
   const purchaseIntertwinedFateModal = (
-    <ItemToPurchaseModal showInsufficientPrimogemsModal={showInsufficientPrimogemsModal} closeItemToPurchaseModal={closeItemToPurchaseModal} numPrimogems={numPrimogems} 
+    <ItemToPurchaseModal
       itemName={'Intertwined Fate'} starRating={5} primogemPrice={160} imgSrc={intertwinedFate} 
       openInfoModal={()=>showInfoModal(intertwinedFateBlurb, `Owned: ${numIntertwinedFates}`)} 
       purchaseItem={purchaseIntertwinedFates} description={intertwinedFateDescription}/>
   );
   const acquaintFateDescription = `A seed that lights up the night. No matter the distance apart, guided by the stone's glimmer, the fated will meet under the stars.`;
   const purchaseAcquaintFateModal = (
-    <ItemToPurchaseModal showInsufficientPrimogemsModal={showInsufficientPrimogemsModal} closeItemToPurchaseModal={closeItemToPurchaseModal} numPrimogems={numPrimogems} 
+    <ItemToPurchaseModal
       itemName={'Acquaint Fate'} starRating={5} primogemPrice={160} imgSrc={acquaintFate} 
       openInfoModal={()=>showInfoModal(acquaintFateBlurb, `Owned: ${numAcquaintFates}`)} 
       purchaseItem={purchaseAcquaintFates} description={acquaintFateDescription}/>
   );
-  const ITEM_MODALS = {
-    intertwinedFate: purchaseIntertwinedFateModal,
-    acquaintFate: purchaseAcquaintFateModal
-  }
-  const [itemToPurchaseModal, setItemToPurchaseModal] = useState(ITEM_MODALS.intertwinedFate);
+  const [buying, setBuying] = useState('intertwinedFate');
 
   //purchase confirmation modal
   const showPurchaseConfirmationModal = (imgSrc, starRating, quantity, itemName, openInfoModal) => {
@@ -672,7 +667,7 @@ const InsufficientPrimogemsModal = props => {
         <TopRightMenu showInfoModal={showInfoModal} numPrimogems={numPrimogems} showAddPrimogemModal={showAddPrimogemModal}
           isStandard={isStandard} numAcquaintFates={numAcquaintFates} numIntertwinedFates={numIntertwinedFates} NUM_FATES={NUM_FATES}/>
       </div>
-
+    
       <Modal
         isOpen={infoModalIsOpen}
         contentLabel='blurb'
@@ -686,7 +681,7 @@ const InsufficientPrimogemsModal = props => {
       >
         { infoBlurbElement }
       </Modal>
-
+      
       <Modal
         isOpen={shopModalIsOpen}
         contentLabel='blurb'
@@ -728,7 +723,9 @@ const InsufficientPrimogemsModal = props => {
         ariaHideApp={false}
         closeTimeoutMS={200}
       >
-        { itemToPurchaseModal }
+        { buying === 'intertwinedFate' ? purchaseIntertwinedFateModal : 
+          buying === 'acquaintFate' ? purchaseAcquaintFateModal : 
+          null }
       </Modal>
       <ItemToPurchaseHeader hidden={!itemToPurchaseModalIsOpen} className={`z${MODAL_Z_INDICES.itemToPurchase + 1}`} numPrimogems={numPrimogems} showInfoModal={showInfoModal} showAddPrimogemModal={showAddPrimogemModal} />
 
