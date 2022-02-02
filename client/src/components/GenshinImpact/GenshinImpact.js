@@ -20,6 +20,7 @@ import skipWishArrow from './assets/buttons/skip-wish-arrow.png';
 import genesisCrystal from './assets/items/genesis-crystal.png';
 import cancelIcon from './assets/buttons/cancel-icon.png';
 import confirmIcon from './assets/buttons/confirm-icon.png';
+import ratingStar from './assets/items/rating-star.png';
 
 //modals
 import primogemBlurb from './assets/modals/primogem-blurb.png';
@@ -33,6 +34,7 @@ import buyIntertwinedFate from './assets/modals/buy-intertwined-fate.png';
 import buyIntertwinedFateHover from './assets/modals/buy-intertwined-fate-hover.png';
 import purchaseWithPrimogems from './assets/modals/purchase-with-primogems.png';
 import ribbonBar from './assets/modals/ribbon-bar.png';
+import itemToPurchase from './assets/modals/item-to-purchase.png';
 
 const CURRENT_VERSION = '2.4.1';
 const MAX_PRIMOGEMS = 999999999999;
@@ -64,18 +66,7 @@ const TopRightMenu = (props) => {
   const navigate = useNavigate();
   return (
     <div id='top-right-menu'>
-      <span id='primogem-count-container' onClick={()=>props.showInfoModal(primogemBlurb, false)}>
-        <span id='primogem-count-wrapper'>
-          <img id='primogem-icon' src={primogemIcon} alt='primogem' />
-          <span id='primogem-count'>
-            { props.numPrimogems }
-          </span>
-        </span>
-        <img id='add-primogem-button' onClick={(e)=>{
-            e.stopPropagation();
-            props.showAddPrimogemModal();
-          }} src={addPrimogemButton} alt='add primogem button' />
-      </span>
+      <PrimogemCount id='shop-modal-primogem-count' showInfoModal={props.showInfoModal} numPrimogems={props.numPrimogems} showAddPrimogemModal={props.showAddPrimogemModal} />
       <span id='fate-count-container' onClick={
         props.isStandard 
         ? ()=>props.showInfoModal(acquaintFateBlurb, `Owned: ${props.numAcquaintFates}`) 
@@ -92,6 +83,37 @@ const TopRightMenu = (props) => {
     </div>
   )
 }
+
+/* ------------------------- cancel/confirm buttons ------------------------- */
+const CancelButton = props => (
+  <div className={`flash-button cancel-button ${props.class}`} id={`${props.id}`} onClick={()=>props.onClick()}>
+    <img id='cancel-icon' src={cancelIcon} alt='cancel' />
+    {props.text}
+  </div>
+)
+const ConfirmButton = props => (
+  <div className={`flash-button confirm-button ${props.class}`} id={`${props.id}`} onClick={()=>props.onClick()}>
+    <img id='confirm-icon' src={confirmIcon} alt='confirm' />
+    {props.text}
+  </div>
+)
+
+/* ----------------------- primogem counter component ----------------------- */
+const PrimogemCount = props =>(
+  <span id={`${props.id}`} className={`primogem-count-container ${props.className}`} onClick={()=>props.showInfoModal(primogemBlurb, false)}>
+    <span id='primogem-count-wrapper'>
+      <img id='primogem-icon' src={primogemIcon} alt='primogem' />
+      <span id='primogem-count'>
+        { props.numPrimogems }
+      </span>
+    </span>
+    {props.noAdd ? null : 
+    <img id='add-primogem-button' onClick={(e)=>{
+        e.stopPropagation();
+        props.showAddPrimogemModal();
+      }} src={addPrimogemButton} alt='add primogem button' /> }
+  </span>
+)
 
 /* -------------------------- info modal component -------------------------- */
 const InfoModal = (props) => (
@@ -120,17 +142,17 @@ const ShopModal = (props) => {
   }
   return (
     <>
-    <div className='blurb-container'>
+    <div className='blurb-container z1'>
       <div id='purchase-with-primogems-container'>
         <img id='purchase-with-primogems' src={purchaseWithPrimogems} alt='purchase with primogems' />
         <img id='ribbon-bar' src={ribbonBar} alt='ribbon bar' />
       </div>
       <div id='buy-options'>
-        <div id='buy-acquaint-fate-container' onMouseOver={()=>toggleAcquaintFateImg()} onMouseOut={()=>toggleAcquaintFateImg()}>
+        <div id='buy-acquaint-fate-container' onClick={()=>props.showItemToPurchaseModal()} onMouseOver={()=>toggleAcquaintFateImg()} onMouseOut={()=>toggleAcquaintFateImg()}>
           <img id='buy-acquaint-fate' src={buyAcquaintFate} alt='buy acquaint fate' />
           <img id='buy-acquaint-fate-hover' className='hidden' src={buyAcquaintFateHover} alt='buy acquaint fate hover' />
         </div>
-        <div id='buy-intertwined-fate-container' onMouseOver={()=>toggleIntertwinedFateImg()} onMouseOut={()=>toggleIntertwinedFateImg()}>
+        <div id='buy-intertwined-fate-container' onClick={()=>props.showItemToPurchaseModal()} onMouseOver={()=>toggleIntertwinedFateImg()} onMouseOut={()=>toggleIntertwinedFateImg()}>
           <img id='buy-intertwined-fate' src={buyIntertwinedFate} alt='buy intertwined fate' />
           <img id='buy-intertwined-fate-hover' className='hidden' src={buyIntertwinedFateHover} alt='buy intertwined fate hover' /></div>
       </div>
@@ -141,39 +163,27 @@ const ShopModal = (props) => {
 
 /* --------------------------- shop modal header ---------------------------- */
 const ShopModalHeader = (props) => (
-  <div id='shop-modal-header' className='hidden z1'>
-    <span id='shop-modal-primogem-count'  onClick={()=>props.showInfoModal(primogemBlurb, false)}>
-      <span id='primogem-count-wrapper'>
-        <img id='primogem-icon' src={primogemIcon} alt='primogem' />
-        <span id='primogem-count'>
-          { props.numPrimogems }
-        </span>
-      </span>
-      <img id='add-primogem-button' onClick={(e)=>{
-          e.stopPropagation();
-          props.showAddPrimogemModal();
-        }} src={addPrimogemButton} alt='add primogem button' />
-    </span>
+  <div id='shop-modal-header' className={`${props.hidden ? 'hidden' : null} ${props.className}`}>
+    <PrimogemCount id='shop-modal-primogem-count' showInfoModal={props.showInfoModal} numPrimogems={props.numPrimogems} showAddPrimogemModal={props.showAddPrimogemModal} />
     <img id='close-shop-modal' src={closeButton} onClick={()=>props.closeShopModal()} alt='close shop modal' />
   </div>
 );
 
 /* ---------------------- add primogem modal component ---------------------- */
 const AddPrimogemModal = (props) => {
-  const primogemQuantity = props.primogemQuantity;
-  const setPrimogemQuantity = props.setPrimogemQuantity;
+  const [primogemQuantity, setPrimogemQuantity] = useState(1);
   const numPrimogems = props.numPrimogems;
   const closeAddPrimogemModal = props.closeAddPrimogemModal;
   const addPrimogems = props.addPrimogems;
   
   return (
-  <div className='blurb-container'>
+  <div className='blurb-container z2'>
     <img className='blurb-image add-primogem-image' src={addPrimogemBlurb} alt='add primogem modal' />
     <input id='primogem-quantity' type='number' min='0' placeholder='0' max={MAX_PRIMOGEMS-numPrimogems} value={primogemQuantity} 
       onChange={e=>{
-        const newValue = e.target.value;
-        console.log(e.target.value);
-        setPrimogemQuantity(newValue === '' ? 0 : newValue);
+        const newValue = e.target.value === '' ? 0 : parseInt(e.target.value, 10);
+        e.target.value = newValue;
+        setPrimogemQuantity(newValue);
       }}/>
 
     <div className={`${primogemQuantity <= 0 ? 'unclickable-1' : ''}`} 
@@ -181,17 +191,17 @@ const AddPrimogemModal = (props) => {
     <div className={`${primogemQuantity >= MAX_PRIMOGEMS-numPrimogems ? 'unclickable-1' : ''}`}
       id='increment-primogem-quantity' onClick={()=>setPrimogemQuantity(prev=>Math.min(prev+1, MAX_PRIMOGEMS))} />
 
-    <div className={`flash-button ${primogemQuantity <= 0 ? 'unclickable-2' : ''}`} 
+    <div className={`genshin-small-button-gray flash-button ${primogemQuantity <= 0 ? 'unclickable-2' : ''}`} 
       id='minus-100' onClick={
         ()=>setPrimogemQuantity(prev=>Math.max(prev-100, 0))}>
       -100
     </div>
-    <div className={`flash-button ${primogemQuantity >= MAX_PRIMOGEMS-numPrimogems ? 'unclickable-2' : ''}`}
+    <div className={`genshin-small-button-gray flash-button ${primogemQuantity >= MAX_PRIMOGEMS-numPrimogems ? 'unclickable-2' : ''}`}
       id='plus-100' onClick={
         ()=>setPrimogemQuantity(prev=>Math.min(prev+100, MAX_PRIMOGEMS))}>
       +100
     </div>
-    <div className={`flash-button ${primogemQuantity >= MAX_PRIMOGEMS-numPrimogems ? 'unclickable-2' : ''}`} 
+    <div className={`genshin-small-button-gray flash-button ${primogemQuantity >= MAX_PRIMOGEMS-numPrimogems ? 'unclickable-2' : ''}`} 
       id='max' onClick={
         ()=>setPrimogemQuantity(MAX_PRIMOGEMS-numPrimogems)}>
       Max
@@ -207,36 +217,81 @@ const AddPrimogemModal = (props) => {
       {primogemQuantity}
     </div>
 
-    <div className='flash-button' id='add-primogem-cancel-button' onClick={()=>closeAddPrimogemModal()}>
-      <img id='cancel-icon' src={cancelIcon} alt='cancel' />
-      Cancel
-    </div>
-    <div className={`flash-button ${primogemQuantity <= 0 || numPrimogems >= MAX_PRIMOGEMS ? 'unclickable-2' : ''}`} id='add-primogem-exchange-button' onClick={()=>{addPrimogems(primogemQuantity); closeAddPrimogemModal();}}>
-      <img id='confirm-icon' src={confirmIcon} alt='confirm' />
-      Exchange
-    </div>
+    <CancelButton id='add-primogem-cancel-button' onClick={closeAddPrimogemModal} text='Cancel' />
+    <ConfirmButton id='add-primogem-confirm-button' class={`${primogemQuantity <= 0 || numPrimogems >= MAX_PRIMOGEMS ? 'unclickable-2' : ''}`}
+      onClick={()=>{addPrimogems(primogemQuantity); closeAddPrimogemModal();}} text='Exchange'/>
   </div>)
 };
 
 /* ---------------------- header for add primogem menu ---------------------- */
 const AddPrimogemHeader = (props) => (
-  <div id='add-primogem-header' className='hidden z2'>
-    <span id='primogem-count-container' onClick={()=>props.showInfoModal(primogemBlurb, false)}>
-        <span id='primogem-count-wrapper'>
-          <img id='primogem-icon' src={primogemIcon} alt='primogem' />
-          <span id='primogem-count'>
-            { props.numPrimogems }
-          </span>
+  <div id='add-primogem-header' className={`add-primogem-header ${props.hidden ? 'hidden' : null} ${props.className}`}>
+    <PrimogemCount id='shop-modal-primogem-count' showInfoModal={props.showInfoModal} numPrimogems={props.numPrimogems} noAdd/>
+    <span id='genesis-crystal-count-container' onClick={()=>props.showInfoModal(genesisCrystalBlurb, false)}>
+      <img id='genesis-crystal-icon' 
+        src={genesisCrystal} 
+        alt='genesis crystal' />
+      <span id='genesis-crystal-count'>
+        &#8734;
+      </span>
+    </span>
+  </div>
+);
+
+/* ------------------------- item to purchase modal ------------------------- */
+const ItemToPurchaseModal = (props) => {
+  const [quantity, setQuantity] = useState(1);
+
+  return (
+  <div className='blurb-container'>
+    <img className='blurb-image item-to-purchase-image' src={itemToPurchase} alt='item to purchase' />
+    <div className='purchase-item-info-container' onClick={()=>props.openInfoModal()}>
+      <img className='genshin-item-image' src={props.imgSrc} alt={props.itemName} />
+      <div className='genshin-item-info'>
+        <div className='genshin-item-name'>
+          {props.itemName}
+        </div>
+        <div className='genshin-item-star-rating'>
+          <img className='rating-star' src={ratingStar} alt='star' />
+          <img className='rating-star' src={ratingStar} alt='star' />
+          <img className='rating-star' src={ratingStar} alt='star' />
+          <img className='rating-star' src={ratingStar} alt='star' />
+          <img className='rating-star' src={ratingStar} alt='star' />
+        </div>
+        <div className='genshin-item-description-wrapper masked-overflow'>
+          <div className='genshin-item-description'>
+            A fateful stone that connects dreams. Its glimmers can entwine fates and connect dreams, just as how its glimmers link stars into the shapes of a heart's desires.
+          </div>
+        </div>
+      </div>
+      <PrimogemCount className={props.numPrimogems/props.primogemPrice >= 1 ? null : 'insufficient-red'} id='item-to-purchase-primogem-count' showInfoModal={props.showInfoModal} numPrimogems={props.numPrimogems} noAdd/>
+      <div className='info-icon'>
+        <div className='info-icon-dot' />
+        <div className='info-icon-line' />
+      </div>
+    </div>
+    <div id='item-to-purchase-quantity'>{quantity}</div>
+    <input type='range' id='quantity-to-purchase' className='genshin-slider' min='1' max={`${Math.max((props.numPrimogems / props.primogemPrice), 1)}`} value={quantity} onChange={e=>setQuantity(e.target.value)}/>
+    <CancelButton id='item-to-purchase-cancel-button' onClick={()=>props.closeItemToPurchaseModal()} text='Cancel' />
+    <ConfirmButton id='item-to-purchase-confirm-button' onClick={()=>{console.log('try to buy item'); props.closeItemToPurchaseModal();}} text='Purchase'/>
+  </div>)
+};
+
+/* ------------------------- item to purchase header ------------------------ */
+const ItemToPurchaseHeader = (props) => (
+  <div id='item-to-purchase-header' className={`${props.hidden ? 'hidden' : null} ${props.className}`}>
+    <span id='shop-modal-primogem-count'  onClick={()=>props.showInfoModal(primogemBlurb, false)}>
+      <span id='primogem-count-wrapper'>
+        <img id='primogem-icon' src={primogemIcon} alt='primogem' />
+        <span id='primogem-count'>
+          { props.numPrimogems }
         </span>
       </span>
-      <span id='genesis-crystal-count-container' onClick={()=>props.showInfoModal(genesisCrystalBlurb, false)}>
-        <img id='genesis-crystal-icon' 
-          src={genesisCrystal} 
-          alt='genesis crystal' />
-        <span id='genesis-crystal-count'>
-          &#8734;
-        </span>
-      </span>
+      <img id='add-primogem-button' onClick={(e)=>{
+          e.stopPropagation();
+          props.showAddPrimogemModal();
+        }} src={addPrimogemButton} alt='add primogem button' />
+    </span>
   </div>
 );
 
@@ -395,10 +450,28 @@ const GenshinImpact = (props) => {
   }
 
   /* --------------------------------- modals --------------------------------- */
+  const [NUM_MODALS_OPEN, SET_NUM_MODALS_OPEN] = useState(0);
+  const INCREMENT_MODALS_OPEN = () => SET_NUM_MODALS_OPEN(prev => prev + 1);
+  const DECREMENT_MODALS_OPEN = () => SET_NUM_MODALS_OPEN(prev => Math.max(prev - 1, 0));
+  const [MODAL_Z_INDICES, SET_MODAL_Z_INDICES] = useState({
+    info: 0,
+    addPrimogem: 0,
+    shop: 0,
+    itemToPurchase: 0
+  });
+  const updateZIndex = (type) => {
+    INCREMENT_MODALS_OPEN();
+    SET_MODAL_Z_INDICES(prev => ({...prev, [type]: NUM_MODALS_OPEN}));
+  }
+  const resetZIndex = (type) => {
+    DECREMENT_MODALS_OPEN();
+    SET_MODAL_Z_INDICES(prev => ({...prev, [type]: 0}));
+  }
+
   const [infoModalIsOpen, setInfoModalIsOpen] = useState(false);
   const [addPrimogemModalIsOpen, setAddPrimogemModalIsOpen] = useState(false);
   const [shopModalIsOpen, setShopModalIsOpen] = useState(false);
-  const [primogemQuantity, setPrimogemQuantity] = useState(1);
+  const [itemToPurchaseModalIsOpen, setItemToPurchaseModalIsOpen] = useState(false);
 
   const showAddPrimogemHeader = () => {
     const addPrimogemHeader = document.getElementById('add-primogem-header');
@@ -416,34 +489,63 @@ const GenshinImpact = (props) => {
     const shopModalHeader = document.getElementById('shop-modal-header');
     shopModalHeader.classList.add('hidden');
   }
-
+  const showItemToPurchaseHeader = () => {
+    const itemToPurchaseHeader = document.getElementById('item-to-purchase-header');
+    itemToPurchaseHeader.classList.remove('hidden');
+  }
+  const hideItemToPurchaseHeader = () => {
+    const itemToPurchaseHeader = document.getElementById('item-to-purchase-header');
+    itemToPurchaseHeader.classList.add('hidden');
+  }
 
   const [infoBlurbElement, setInfoBlurbElement] = useState(<InfoModal src={primogemBlurb} text={false} />);
 
+  //info modal
   const showInfoModal = (src, text) => {
+    updateZIndex('info');
     setInfoBlurbElement(<InfoModal src={src} text={text} />);
     setInfoModalIsOpen(true);
   }
+  const closeInfoModal = () => {
+    resetZIndex('info');
+    setInfoModalIsOpen(false);
+  }
+
+  //add primogem modal
   const showAddPrimogemModal = () => {
+    updateZIndex('addPrimogem');
     showAddPrimogemHeader();
     setAddPrimogemModalIsOpen(true);
   }
-  const showShopModal = () => {
-    showShopModalHeader();
-    setShopModalIsOpen(true);
-  }
-  const closeInfoModal = () => {
-    setInfoModalIsOpen(false);
-  }
   const closeAddPrimogemModal = () => {
-    setPrimogemQuantity(1);
+    resetZIndex('addPrimogem');
     hideAddPrimogemHeader();
     setAddPrimogemModalIsOpen(false);
   };
+
+  //shop modal
+  const showShopModal = () => {
+    updateZIndex('shop');
+    showShopModalHeader();
+    setShopModalIsOpen(true);
+  }
   const closeShopModal = () => {
+    resetZIndex('shop');
     hideShopModalHeader()
     setShopModalIsOpen(false);
   };
+
+  //item to purchase modal
+  const showItemToPurchaseModal = () => {
+    updateZIndex('itemToPurchase');
+    showItemToPurchaseHeader();
+    setItemToPurchaseModalIsOpen(true);
+  }
+  const closeItemToPurchaseModal = () => {
+    resetZIndex('itemToPurchase');
+    hideItemToPurchaseHeader();
+    setItemToPurchaseModalIsOpen(false);
+  }
 
   /* --------------------------------- wish UI -------------------------------- */
   const wishUI = (
@@ -460,41 +562,11 @@ const GenshinImpact = (props) => {
       </div>
 
       <Modal
-        isOpen={shopModalIsOpen}
-        contentLabel='blurb'
-        onRequestClose={closeShopModal}
-        className='blurb-modal'
-        overlayClassName='blurb-overlay blur-backdrop'
-        parentSelector={
-          () => document.querySelector('.gacha-area')}
-        ariaHideApp={false}
-        closeTimeoutMS={200}
-      >
-        <ShopModal />
-      </Modal>
-      <ShopModalHeader closeShopModal={closeShopModal} showInfoModal={showInfoModal} numPrimogems={numPrimogems} showAddPrimogemModal={showAddPrimogemModal} />
-      
-      <Modal
-        isOpen={addPrimogemModalIsOpen}
-        contentLabel='blurb'
-        onRequestClose={closeAddPrimogemModal}
-        className='blurb-modal z4'
-        overlayClassName='blurb-overlay'
-        parentSelector={
-          () => document.querySelector('.gacha-area')}
-        ariaHideApp={false}
-        closeTimeoutMS={200}
-      >
-        <AddPrimogemModal addPrimogems={modifyPrimogems} setPrimogemQuantity={setPrimogemQuantity} primogemQuantity={primogemQuantity} numPrimogems={numPrimogems} closeAddPrimogemModal={closeAddPrimogemModal} />
-      </Modal>
-      <AddPrimogemHeader numPrimogems={numPrimogems} showInfoModal={showInfoModal} />
-
-      <Modal
         isOpen={infoModalIsOpen}
         contentLabel='blurb'
         onRequestClose={closeInfoModal}
         className='blurb-modal'
-        overlayClassName='blurb-overlay z3'
+        overlayClassName={`blurb-overlay z${MODAL_Z_INDICES.info}`}
         parentSelector={
           () => document.querySelector('.gacha-area')}
         ariaHideApp={false}
@@ -502,6 +574,52 @@ const GenshinImpact = (props) => {
       >
         { infoBlurbElement }
       </Modal>
+
+      <Modal
+        isOpen={shopModalIsOpen}
+        contentLabel='blurb'
+        onRequestClose={closeShopModal}
+        className='blurb-modal'
+        overlayClassName={`blurb-overlay blur-backdrop z${MODAL_Z_INDICES.shop}`}
+        parentSelector={
+          () => document.querySelector('.gacha-area')}
+        ariaHideApp={false}
+        closeTimeoutMS={200}
+      >
+        <ShopModal showItemToPurchaseModal={showItemToPurchaseModal} />
+      </Modal>
+      <ShopModalHeader hidden={!shopModalIsOpen} className={`z${MODAL_Z_INDICES.shop + 1}`} closeShopModal={closeShopModal} showInfoModal={showInfoModal} numPrimogems={numPrimogems} showAddPrimogemModal={showAddPrimogemModal} />
+      
+      <Modal
+        isOpen={addPrimogemModalIsOpen}
+        contentLabel='blurb'
+        onRequestClose={closeAddPrimogemModal}
+        className='blurb-modal'
+        overlayClassName={`blurb-overlay z${MODAL_Z_INDICES.addPrimogem}`}
+        parentSelector={
+          () => document.querySelector('.gacha-area')}
+        ariaHideApp={false}
+        closeTimeoutMS={200}
+      >
+        <AddPrimogemModal addPrimogems={modifyPrimogems} numPrimogems={numPrimogems} closeAddPrimogemModal={closeAddPrimogemModal} />
+      </Modal>
+      <AddPrimogemHeader hidden={!addPrimogemModalIsOpen} className={`z${MODAL_Z_INDICES.addPrimogem + 1}`} numPrimogems={numPrimogems} showInfoModal={showInfoModal} />
+
+      <Modal
+        isOpen={itemToPurchaseModalIsOpen}
+        contentLabel='blurb'
+        onRequestClose={closeItemToPurchaseModal}
+        className='blurb-modal'
+        overlayClassName={`blurb-overlay z${MODAL_Z_INDICES.itemToPurchase}`}
+        parentSelector={
+          () => document.querySelector('.gacha-area')}
+        ariaHideApp={false}
+        closeTimeoutMS={200}
+      >
+        <ItemToPurchaseModal closeItemToPurchaseModal={closeItemToPurchaseModal} numPrimogems={numPrimogems} 
+          itemName={'Intertwined Fate'} primogemPrice={160} imgSrc={intertwinedFate} openInfoModal={()=>showInfoModal(intertwinedFateBlurb, `Owned: ${numIntertwinedFates}`)} />
+      </Modal>
+      <ItemToPurchaseHeader hidden={!itemToPurchaseModalIsOpen} className={`z${MODAL_Z_INDICES.itemToPurchase + 1}`} numPrimogems={numPrimogems} showInfoModal={showInfoModal} showAddPrimogemModal={showAddPrimogemModal} />
 
       <img id='change-banner-left' src={changeBannerLeft} alt='change banner left' onClick={()=>rotateBanner(false)}/>
 
@@ -514,7 +632,7 @@ const GenshinImpact = (props) => {
 
       <img id='change-banner-right' src={changeBannerRight} alt='change banner right' onClick={()=>rotateBanner(true)}/>
 
-      <div id='shop-button' onClick={()=>showShopModal()}>Shop</div>
+      <div id='genshin-shop-button' className='genshin-small-button' onClick={()=>showShopModal()}>Shop</div>
 
       <div className='wish-buttons'>
         <img className='wish-button' onClick={()=>roll1x()} src={require(`${wishX1Button}`)} alt='wish x1'/>

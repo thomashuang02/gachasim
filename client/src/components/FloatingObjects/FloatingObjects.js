@@ -2,7 +2,7 @@ import './FloatingObjects.scss';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const NUM_IMAGES = 20;
+const NUM_IMAGES = 15;
 
 const FloatingObjects = (props) => {
   const [images, setImages] = useState(null);

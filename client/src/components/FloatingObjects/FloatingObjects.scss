@@ -3,8 +3,7 @@
 }
 .floating{
 	position: absolute;
-	bottom: 150vh;
-	transform-style: preserve-3d;
+	bottom: 120vh;
 	transition: opacity 0.5s;
 	opacity: 1;
 	-webkit-touch-callout: none; /* iOS Safari */
@@ -14,18 +13,18 @@
         -ms-user-select: none; /* Internet Explorer/Edge */
             user-select: none;
 }
-$total: 20;
+$total: 15;
 @for $i from 1 through $total {
 	$scale:random(2) - .4;
 	.floating:nth-child(#{$i}){
 		left: calc(random(100) * 1% - 200px);
 		animation: raise#{$i} 6 + random(15) +s linear infinite;
-		animation-delay:random(5) - 5 + s;
+		animation-delay: random(5) - 5 + s;
 		z-index: $total - $i;
 		transform: scale(0.5 - (0.3 * $i / $total)) rotate(random(360) + deg);
 	  @keyframes raise#{$i} {
 		  to{
-			 bottom: -50vh;
+			 bottom: -20vh;
 			 transform: scale(0.5 - 0.3 * ($i / $total)) rotate(random(360) + deg);
 			}
 		}
