@@ -30,7 +30,7 @@
     bottom: 50%;
     transform: translateY(50%);
     opacity: 1;
-    transition: 0.5s;
+    transition: 0.3s;
 }
 #banner-image {
     width: 100%;
@@ -196,7 +196,7 @@
     #wish-title-container {
         display: none;
     }
-    #top-right-menu, #add-primogem-header {
+    #top-right-menu, #primogem-crystal-header {
         flex-direction: column;
         align-items: start;
     }
@@ -311,7 +311,7 @@
         font-size: 4.1vw;
     }
 }
-#add-primogem-header {
+#primogem-crystal-header {
     position: absolute;
     top: 0;
     padding: 2vh 7vw;
@@ -478,7 +478,10 @@
     margin: auto;
 }
 @media screen and (max-width: 1300px) {
-    .add-primogem-image, .item-to-purchase-image {
+    .generic-modal {
+        width: 95vw !important;
+    }
+    .add-primogem, .item-to-purchase {
         width: 95vw !important;
     }
     #item-to-purchase-quantity {
@@ -720,8 +723,8 @@
     position: absolute;
     color: black;
     width: 83%;
-    height: 29%;
-    bottom: 53.8%;
+    height: 27.5%;
+    bottom: 55.3%;
     left: 0;
     right: 0;
     margin: auto;
@@ -889,4 +892,119 @@
   
     /* We don't repeat our mask images */
     mask-repeat: no-repeat, no-repeat;
+}
+
+.purchase-confirmation {
+    height: min(700px, 75vh);
+    width: 90vw;
+    align-items: center;
+}
+.obtained-dialogue {
+    color: #D3BC8E;
+    font-size: 45px;
+    position: absolute;
+    top: -5%;
+    transform: translateY(100%);
+}
+.click-anywhere-dialogue {
+    position: absolute;
+    bottom: 0;
+    color: rgba(255, 255, 255, 0.479);
+    font-size: 32px;
+    text-align: center;
+}
+.purchase-confirmation-item-container {
+    width: 180px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+}
+.purchase-confirmation-item {
+    background-color: #E9E5DC;
+    width: 180px;
+    height: 210px;
+    border-radius: 6px;
+    position: relative;
+}
+.purchase-confirmation-image-container {
+    background-image: linear-gradient(to bottom right, #986635,#C37D31);
+    overflow: hidden;
+    border-radius: 6px 6px 38px 6px;
+}
+.purchase-confirmation-image {
+    width: 100%;
+    padding: 16px;
+}
+.purchase-confirmation-rating {
+    width: 100%;
+    text-align: center;
+    position: absolute;
+    bottom: 12%;
+}
+.purchase-confirmation-quantity {
+    width: 100%;
+    text-align: center;
+    position: absolute;
+    bottom: 2%;
+    font-size: 26px;
+    color: var(--genshin-gray);
+}
+.purchase-confirmation-item-name {
+    margin-top: 14px;
+    color: white;
+    max-width: 180px;
+    text-align: center;
+    font-size: 25px;
+}
+.purchase-confirmation-overlay {
+    background-color: transparent !important;
+}
+.purchase-confirmation-overlay::before {
+    content: '';
+    display: block;
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    background-image: linear-gradient(to bottom, #36323B, #464046, #545E74, #5B585D, #6B6768) !important;
+    opacity: 90%;
+    z-index: 0;
+}
+.generic-modal {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.generic-modal-cancel-button, .generic-modal-confirm-button {
+    bottom: 8%;
+}
+.generic-modal-cancel-button {
+    left: 8.3%;
+}
+.generic-modal-confirm-button {
+    right: 8.3%;
+}
+.generic-modal-title, .generic-modal-text {
+    position: absolute;
+    color: var(--genshin-gray);
+}
+.generic-modal-title {
+    position: absolute;
+    top: 5.5%;
+    font-size: 50px;
+}
+.generic-modal-text {
+    max-width: 80%;
+    margin: auto;
+    left: 0;
+    right: 0;
+    top: 46%;
+    transform: translateY(-50%);
+    font-size: 42px;
+    text-align: center;
+}
+.genshin-yellow {
+    color: #F49C00;
 }

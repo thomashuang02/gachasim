@@ -61,14 +61,15 @@ router.post('/modify-user',
             res.status(403);
         }
         else {
-            const update = {}
+            const deltas = {}
             for (const [key, value] of Object.entries(req.body)) {
-                update[`GenshinImpact.${key}`] = value;
+                deltas[`GenshinImpact.${key}`] = value;
             }
-            console.log(req.body);
+            const update = {
+                $inc: deltas
+            }
             const user = await User.findOneAndUpdate({username: req.user.username}, update, {new:true});
             if(user) {
-                console.log(user.GenshinImpact);
                 res.send(user.GenshinImpact);
             }
             else {
