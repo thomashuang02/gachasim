@@ -41,7 +41,6 @@ router.post('/login', (req, res, next) => {
     authenticate(req, res, next);
 });
 router.post('/register', (req, res, next) => {
-    console.log(req.body);
     if(req.body.username) {
         User.findOne({username: req.body.username}, async (err, user) => {
             if (err) throw err;

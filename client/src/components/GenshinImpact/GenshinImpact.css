@@ -837,6 +837,9 @@
     border-radius: 5px;
 }
 .rating-star {
+    filter: drop-shadow(0 0 2px #6D5553);
+}
+.genshin-item-star-rating .rating-star {
     width: 4.25%;
     padding: 1.1% 0.6% 0.7% 0;
     filter: drop-shadow(0 0 2px #6D5553);
@@ -943,7 +946,7 @@
 .purchase-confirmation-item {
     background-color: #E9E5DC;
     width: 180px;
-    height: 210px;
+    height: 215px;
     border-radius: 6px;
     position: relative;
 }
@@ -960,13 +963,13 @@
     width: 100%;
     text-align: center;
     position: absolute;
-    bottom: 12%;
+    bottom: 14.5%;
 }
 .purchase-confirmation-quantity {
     width: 100%;
     text-align: center;
     position: absolute;
-    bottom: 2%;
+    bottom: 1.5%;
     font-size: 26px;
     color: var(--genshin-gray);
 }
