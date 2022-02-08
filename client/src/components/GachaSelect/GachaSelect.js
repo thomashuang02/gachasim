@@ -7,7 +7,7 @@ import LogoHeader from '../LogoHeader/LogoHeader';
 const GachaOption = props => {
   return (
     <div className='form-item'>
-      <button className='gacha-option' type='button' onClick={() => window.location.href=props.href}>{props.name}</button>
+      <button className={`gacha-option ${props.unimplemented ? 'unimplemented-gacha-option' : null}`} type='button' onClick={() => window.location.href=props.href}>{props.name}</button>
     </div>
   )
 }
@@ -23,35 +23,33 @@ const GachaSelect = (props) => {
   const gachaOptions = [
     {
       name: 'AFK Arena',
-      href: 'https://google.com'
-    },
-    {
-      name: 'Another Eden',
-      href: 'https://google.com'
+      href: 'https://google.com',
+      unimplemented: true
     },
     {
       name: 'Arknights',
-      href: 'https://google.com'
-    },
-    {
-      name: 'Azure Lane',
-      href: 'https://google.com'
+      href: 'https://google.com',
+      unimplemented: true
     },
     {
       name: 'Cookie Run Kingdom',
-      href: 'https://google.com'
+      href: 'https://google.com',
+      unimplemented: true
     },
     {
       name: 'Epic Seven',
-      href: 'https://google.com'
+      href: 'https://google.com',
+      unimplemented: true
     },
     {
       name: 'Fate/Grand Order',
-      href: 'https://google.com'
+      href: 'https://google.com',
+      unimplemented: true
     },
     {
       name: 'Fire Emblem Heroes',
-      href: 'https://google.com'
+      href: 'https://google.com',
+      unimplemented: true
     },
     {
       name: 'Genshin Impact',
@@ -59,34 +57,35 @@ const GachaSelect = (props) => {
     },
     {
       name: 'Granblue Fantasy',
-      href: 'https://google.com'
+      href: 'https://google.com',
+      unimplemented: true
     },
     {
       name: 'Honkai Impact 3rd',
-      href: 'https://google.com'
+      href: 'https://google.com',
+      unimplemented: true
     },
     {
       name: 'Onmyoji',
-      href: 'https://google.com'
-    },
-    {
-      name: 'RAID: Shadow Legends',
-      href: 'https://google.com'
+      href: 'https://google.com',
+      unimplemented: true
     },
     {
       name: 'Soccer Spirits',
-      href: 'https://google.com'
+      href: 'https://google.com',
+      unimplemented: true
     },
     {
       name: 'Summoners War',
-      href: 'https://google.com'
+      href: 'https://google.com',
+      unimplemented: true
     },
   ]
   const [search, setSearch] = useState('');
   const filterOptions = str => {
     return gachaOptions.map((option, index) => (
       option.name.toLowerCase().includes(str.toLowerCase()) ? 
-      <GachaOption name={option.name} href={option.href} key={index} /> : null
+      <GachaOption unimplemented={option.unimplemented} name={option.name} href={option.href} key={index} /> : null
     ));
   }
 
@@ -111,7 +110,7 @@ const GachaSelect = (props) => {
         <div className='form-item' id='gacha-search'>
           <input type='text' name='search' placeholder='search...' value={search} onChange={e => setSearch(e.target.value)}></input>
         </div>
-        <div className='gacha-options-container'>
+        <div className='gacha-options-container masked-overflow'>
           { gachaOptionComponents }
         </div>
       </div>

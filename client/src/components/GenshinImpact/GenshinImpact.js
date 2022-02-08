@@ -37,6 +37,9 @@ import ribbonBar from './assets/modals/ribbon-bar.png';
 import itemToPurchase from './assets/modals/item-to-purchase.png';
 import genericModal from './assets/modals/generic-modal.png';
 
+//wish results
+import wishResultBackground from './assets/wish-results/wish-result-background.jpg';
+
 const CURRENT_VERSION = '2.4.1';
 const MAX_PRIMOGEMS = 999999999999;
 
@@ -63,16 +66,28 @@ const showSkipWishButton = () => {
 }
 
 /* ------------------------ wish animation component ------------------------ */
-const WishAnimation = (props) => (
-  <>
-    <div id='skip-wish-animation-button' className='hidden' onClick={()=>props.setShowWishAnimation(false)}>
-      Skip <img id='skip-wish-arrow' src={skipWishArrow} alt='skip wish'></img>
+const WishAnimation = props => {
+  return (
+    <div id='wish-animation-container'>
+      <div id='skip-wish-animation-button' className='hidden' onClick={()=>props.proceedToWishResults()}>
+        Skip <img id='skip-wish-arrow' src={skipWishArrow} alt='skip wish'></img>
+      </div>
+      <video onClick={()=>showSkipWishButton()} autoPlay muted id='wish-animation' onEnded={()=>props.proceedToWishResults()}>
+        <source src={require(`${props.wishAnimation}`)} type='video/mp4' />
+      </video>
     </div>
-    <video onClick={()=>showSkipWishButton()}autoPlay muted id='wish-animation' onEnded={()=>props.setShowWishAnimation(false)}>
-      <source src={require(`${props.wishAnimation}`)} type='video/mp4' />
-    </video>
-  </>
-);
+  )
+};
+
+/* ------------------------- wish results component ------------------------- */
+const WishResults = props => {
+  return (
+    <div id='wish-results'>
+      <img id='wish-results-background' src={wishResultBackground} alt='wish results background' />
+      <img id='close-wish-results' className='close-button' src={closeButton} onClick={()=>props.closeWishResults()} alt='close wish results' />
+    </div>
+  )
+}
 
 /* ------------------------- cancel/confirm buttons ------------------------- */
 const CancelButton = props => (
@@ -220,6 +235,7 @@ const GenshinImpact = (props) => {
   /* ----------------------------- wish animation ----------------------------- */
   const [wishAnimation, setWishAnimation] = useState(wishAnimationBank.multi.fourStar);
   const [showWishAnimation, setShowWishAnimation] = useState(false);
+  const [showWishResults, setShowWishResults] = useState(false);
 
   /* ------------------------------ rolling logic ----------------------------- */
   const roll10x = () => {
@@ -288,7 +304,7 @@ const TopRightMenu = (props) => {
           { NUM_FATES }
         </span>
       </span>
-      <img id='close-wish-button' src={closeButton} onClick={()=>navigate('/gacha')} alt='close wish button' />
+      <img id='close-wish-button' className='close-button' src={closeButton} onClick={()=>navigate('/gacha')} alt='close wish button' />
     </div>
   )
 }
@@ -341,7 +357,7 @@ const ShopModal = (props) => {
 const ShopModalHeader = (props) => (
   <div id='shop-modal-header' className={`${props.hidden ? 'hidden' : null} ${props.className}`}>
     <PrimogemCount id='shop-modal-primogem-count' showInfoModal={showInfoModal} numPrimogems={numPrimogems} showAddPrimogemModal={showAddPrimogemModal} />
-    <img id='close-shop-modal' src={closeButton} onClick={()=>closeShopModal()} alt='close shop modal' />
+    <img id='close-shop-modal' className='close-button' src={closeButton} onClick={()=>closeShopModal()} alt='close shop modal' />
   </div>
 );
 
@@ -778,18 +794,22 @@ const InsufficientPrimogemsModal = props => {
       </div>
     </>
   );
+  
+  const proceedToWishResults = () => {
+    setShowWishAnimation(false);
+    setShowWishResults(true);
+  }
 
   return (
     <div id='genshin-wish-page' className='gacha-page'>
       <GachaHeader logo={GenshinImpactLogo} />
       <div className='gacha-area'>
         {
-          showWishAnimation 
-          ?
-          <WishAnimation wishAnimation={wishAnimation} setShowWishAnimation={setShowWishAnimation} />
-          :
-          wishUI
+          showWishAnimation ? <WishAnimation wishAnimation={wishAnimation} proceedToWishResults={proceedToWishResults} />
+          : showWishResults ? <WishResults closeWishResults={()=>setShowWishResults(false)}/>
+          : null
         }
+        { wishUI }
       </div>
     </div>
   );

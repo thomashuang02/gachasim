@@ -20,6 +20,12 @@
 #genshin-wish-page .gacha-area * {
     font-family: 'genshin-impact-font' !important;
 }
+#skip-wish-animation-button {
+    font-family: 'genshin-impact-font' !important;
+}
+#wish-results {
+    font-family: 'genshin-impact-font' !important;
+}
 #banner-image-container {
     width: min(1500px, 80%);
     position: absolute;
@@ -65,12 +71,20 @@
     position: relative;
     bottom: min(1.5vw, 40px);
 }
-#wish-animation {
-    height: 100vh;
+#wish-animation-container {
+    height: 100%;
     width: 100%;
+    position: absolute;
     overflow: hidden;
+}
+#wish-animation {
+    height: 103%;
+    width: 100%;
     object-fit: cover;
     position: absolute;
+    left: 0;
+    right: 0;
+    margin: auto;
 }
 .wish-buttons {
     position: absolute;
@@ -119,13 +133,15 @@
     display: flex;
     align-items: center;
 }
-#close-wish-button {
+.close-button {
     height: 50px;
     cursor: url('./assets/genshin-cursor.png'), pointer;
-    margin-left: 30px;
     transition: 0.1s;
 }
-#close-wish-button:active {
+#close-wish-button {
+    margin-left: 30px;
+}
+.close-button:active {
     filter: brightness(120%) drop-shadow(0 0 10px rgba(255, 255, 255, 0.5));
 }
 #fate-count-container, .primogem-count-container, #genesis-crystal-count-container {
@@ -218,12 +234,14 @@
     position: absolute;
     top: min(5vw, 40px);
     right: min(6vw, 70px);
-    z-index: 1;
     display: flex;
     justify-content: center;
     align-items: center;
     opacity: 1;
     transition: color 0.2s, filter 0.1s, visibility 0s, opacity 0.2s linear;
+    filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.69));
+    user-select: none;
+    z-index: 1;
 }
 #skip-wish-animation-button:active {
     color: white;
@@ -654,14 +672,9 @@
     transition: 0.3s;
 }
 #close-shop-modal {
-    height: 50px;
-    cursor: url('./assets/genshin-cursor.png'), pointer;
     transition: filter 0.1s, opacity 0.3s;
     opacity: 1;
     margin-left: 3vw;
-}
-#close-shop-modal:active {
-    filter: brightness(120%) drop-shadow(0 0 10px rgba(255, 255, 255, 0.5));
 }
 #shop-modal-primogem-count {
     height: 45px;
@@ -866,20 +879,17 @@
     --scrollbar-width: 0px;
   
     /* mask fade distance, for use in mask calculations */
-    --mask-height: 5px;
+    --mask-height: 6px;
   
     /* If content exceeds height of container, overflow! */
     overflow-y: auto;
-  
-    /* Our height limit */
-    height: 300px;
   
     /* Need to make sure container has bottom space,
     otherwise content at the bottom is always faded out */
     padding-bottom: var(--mask-height);
   
     /* Keep some space between content and scrollbar */
-    padding-right: 20px;
+    /* padding-right: 20px; */
   
     /* The CSS mask */
   
@@ -1028,4 +1038,28 @@
 }
 .genshin-yellow {
     color: #F49C00;
+}
+#wish-results {
+    height: 100vh;
+    width: 100vw;
+    position: absolute;
+    background-color: rgb(32, 32, 32);
+    overflow: hidden;
+}
+#wish-results-background {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    object-fit: cover;
+    position: absolute;
+    filter: blur(30px);
+}
+#close-wish-results {
+    z-index: 1;
+    position: absolute;
+    top: 30px;
+    right: 40px;
+}
+#wish-animation-container, #wish-results {
+    z-index: 1000;
 }
